@@ -1,0 +1,101 @@
+/* AdminDashboard.module.css */
+
+.container {
+  min-height: 100vh;
+  background-color: #030712;
+  color: #ffffff;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.roleAdmin {
+  font-weight: 600;
+  color: #f87171;
+}
+
+.roleSetter {
+  font-weight: 600;
+  color: #4ade80;
+}
+
+.logoutBtn {
+  font-size: 0.875rem;
+  background-color: #1f2937;
+  color: #ffffff;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: #374151;
+}
+
+/* Content */
+.content {
+  padding: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background-color: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: #3b82f6;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.cardDesc {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
