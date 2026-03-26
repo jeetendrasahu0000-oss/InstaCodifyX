@@ -6,12 +6,16 @@ export const runCode = async (req, res) => {
 
     console.log("📩 Incoming Data:", req.body);
 
+    // ✅ Encode
+    const encodedCode = Buffer.from(code).toString("base64");
+    const encodedInput = Buffer.from(input || "").toString("base64");
+
     const response = await axios.post(
-      "https://ce.judge0.com/submissions?base64_encoded=false&wait=true",
+      "https://ce.judge0.com/submissions?base64_encoded=true&wait=true",
       {
-        source_code: code,
+        source_code: encodedCode,
         language_id,
-        stdin: input,
+        stdin: encodedInput,
       },
       {
         headers: {
@@ -20,12 +24,24 @@ export const runCode = async (req, res) => {
       }
     );
 
-    console.log("✅ API RESPONSE:", response.data);
+    const result = response.data;
 
-    return res.json(response.data);
+    // ✅ Decode
+    const decode = (str) =>
+      str ? Buffer.from(str, "base64").toString("utf-8") : "";
+
+    console.log("✅ API RESPONSE:", result);
+
+    return res.json({
+      stdout: decode(result.stdout),
+      stderr: decode(result.stderr),
+      compile_output: decode(result.compile_output),
+      time: result.time,
+      memory: result.memory,
+    });
 
   } catch (error) {
-    console.log("❌ ERROR FULL:", error.response?.data || error.message);
+    console.log(" ERROR FULL:", error.response?.data || error.message);
 
     return res.status(500).json({
       error: "Code execution failed",
