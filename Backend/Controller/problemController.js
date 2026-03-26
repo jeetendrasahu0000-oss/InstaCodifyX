@@ -80,3 +80,18 @@ export const togglePublish = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const getPublicProblemBySlug = async (req, res) => {
+  try {
+    const problem = await Problem.findOne({ 
+      slug: req.params.slug, 
+      isPublished: true 
+    }).populate("createdBy", "username");
+    
+    if (!problem) return res.status(404).json({ message: "Problem not found" });
+    res.json(problem);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+

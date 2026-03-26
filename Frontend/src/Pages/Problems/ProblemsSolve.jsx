@@ -147,13 +147,13 @@ export default function ProblemsSolve() {
                                                 <td className={styles.titleCell}>
                                                     <span
                                                         className={styles.problemTitle}
-                                                        onClick={() => navigate(`/problems/${p._id}`)}
+                                                        onClick={() => navigate(`/problems/${p.slug}`)}
                                                     >
                                                         {p.title}
                                                     </span>
                                                     <span
                                                         className={styles.learnMore}
-                                                        onClick={() => navigate(`/problems/${p._id}`)}
+                                                        onClick={() => navigate(`/problems/${p.slug}`)}
                                                     >
                                                         Learn more →
                                                     </span>
@@ -174,7 +174,7 @@ export default function ProblemsSolve() {
                                                 </td>
                                                 <td>
                                                     <button
-                                                        onClick={() => navigate(`/problems/${p._id}`)}
+                                                        onClick={() => navigate(`/problems/${p.slug}`)}
                                                         className={styles.solveBtn}
                                                     >
                                                         Solve

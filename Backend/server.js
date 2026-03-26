@@ -10,7 +10,7 @@ import userRoutes from "./Routers/userRoutes.js";
 import adminRoutes from "./Routers/adminRoutes.js";
 import problemRoutes from "./Routers/problemRoutes.js";
 import setterRequestRoutes from "./Routers/SetterRequestRoute.js";
-import { runCode } from "./Controller/codeController.js";
+
 
 const app = express();
 

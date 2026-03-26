@@ -8,10 +8,12 @@ import {
   deleteProblem,
   togglePublish,
 } from "../Controller/problemController.js";
+import { getPublicProblemBySlug } from "../Controller/problemController.js";
 import {
   protectAdmin,
   authorizeRoles,
 } from "../Middleware/adminAuthMiddleware.js";
+
 
 const router = express.Router();
 
@@ -39,5 +41,5 @@ router.patch(
   authorizeRoles("admin"),
   togglePublish,
 );
-
+router.get("/public/:slug", getPublicProblemBySlug);
 export default router;

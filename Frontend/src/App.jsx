@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './Context/AuthContext'
 import './App.css'
 
+
+
+
 import Login from './Pages/Auth/Signin'
 import Signup from './Pages/Auth/Signup'
 import Forgot from './Pages/Auth/Forgot'
@@ -29,6 +32,7 @@ import { useAdmin } from './Components/Admin/AdminContext'
 import ProblemsSolve from './Pages/Problems/ProblemsSolve'
 import SetterRegister from './Components/Admin/Setterregister'
 import SetterRequests from './Components/Admin/Setterrequests'
+import ProblemDetail from './Pages/Problems/Problemdetail'
 
 // ── Guard: sirf logged-in admin access kar sake ──────────────────────────────
 const AdminOnlyRoute = ({ children }) => {
@@ -93,6 +97,8 @@ const App = () => {
             {/* ── Admin Only Routes ── */}
             <Route path="/admin/register" element={<AdminOnlyRoute><RegisterAdmin/></AdminOnlyRoute>} />
             <Route path="/admin/setter-requests" element={<AdminOnlyRoute><SetterRequests/></AdminOnlyRoute>} />
+
+            <Route path="/problems/:slug" element={<ProblemDetail/>} />
 
           </Routes>
         </BrowserRouter>
