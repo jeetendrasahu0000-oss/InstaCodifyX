@@ -2,25 +2,42 @@
 import Problem from "../Models/Problem.js";
 import slugify from "slugify";
 
-// ✅ Public — sirf published problems
+// ✅ Public — paginated problems
 export const getPublicProblems = async (req, res) => {
   try {
-    const problems = await Problem.find({ isPublished: true })
-      .select("title slug difficulty tags createdAt")
-      .populate("createdBy", "username");
-    res.json(problems);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [problems, total] = await Promise.all([
+      Problem.find({ isPublished: true })
+        .select("title slug difficulty tags createdAt")
+        .populate("createdBy", "username")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Problem.countDocuments({ isPublished: true }),
+    ]);
+
+    res.json({
+      problems,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      hasMore: page * limit < total,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
 // Admin — sab problems
+// Admin — sab problems
 export const getAllProblems = async (req, res) => {
   try {
-    const problems = await Problem.find().populate(
-      "createdBy",
-      "username role",
-    );
+    const problems = await Problem.find()
+      .sort({ createdAt: -1 })  // ← yeh line add karo
+      .populate("createdBy", "username role");
     res.json(problems);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -35,7 +52,7 @@ export const createProblem = async (req, res) => {
       slug,
       createdBy: req.admin._id,
     });
-    res.status(201).json(problem);
+    res.status(101).json(problem);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -83,15 +100,14 @@ export const togglePublish = async (req, res) => {
 
 export const getPublicProblemBySlug = async (req, res) => {
   try {
-    const problem = await Problem.findOne({ 
-      slug: req.params.slug, 
-      isPublished: true 
+    const problem = await Problem.findOne({
+      slug: req.params.slug,
+      isPublished: true,
     }).populate("createdBy", "username");
-    
+
     if (!problem) return res.status(404).json({ message: "Problem not found" });
     res.json(problem);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-

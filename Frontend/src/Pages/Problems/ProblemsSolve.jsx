@@ -1,36 +1,95 @@
 // Frontend/src/Pages/Problems/ProblemsSolve.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import styles from './ProblemsSolve.module.css';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 
+const LIMIT = 10;
+
 export default function ProblemsSolve() {
     const [problems, setProblems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [search, setSearch] = useState('');
     const [difficulty, setDifficulty] = useState('All');
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [total, setTotal] = useState(0);
     const navigate = useNavigate();
+    const observerRef = useRef(null);
+    const sentinelRef = useRef(null);
 
+    // Fetch problems for a given page (append mode)
+    const fetchProblems = useCallback(async (pageNum, reset = false) => {
+        if (reset) setLoading(true);
+        else setLoadingMore(true);
+
+        try {
+            const params = new URLSearchParams({ page: pageNum, limit: LIMIT });
+            if (difficulty !== 'All') params.append('difficulty', difficulty);
+            if (search.trim()) params.append('search', search.trim());
+
+            const { data } = await api.get(`/problems/public?${params}`);
+
+            setProblems(prev => reset ? data.problems : [...prev, ...data.problems]);
+            setTotal(data.total);
+            setHasMore(data.hasMore);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+        }
+    }, [difficulty, search]);
+
+    // Reset when filters change
     useEffect(() => {
-        api.get('/problems/public')
-            .then(({ data }) => { setProblems(data); setLoading(false); })
-            .catch(() => setLoading(false));
-    }, []);
+        setPage(1);
+        setProblems([]);
+        setHasMore(true);
+        fetchProblems(1, true);
+    }, [difficulty, search]);
 
-    const filtered = problems.filter(p => {
-        const matchSearch = p.title.toLowerCase().includes(search.toLowerCase()) ||
-            p.tags?.some(t => t.toLowerCase().includes(search.toLowerCase()));
-        const matchDiff = difficulty === 'All' || p.difficulty === difficulty;
-        return matchSearch && matchDiff;
-    });
+    // Load more when page increments
+    useEffect(() => {
+        if (page === 1) return; // already handled above
+        fetchProblems(page, false);
+    }, [page]);
+
+    // Intersection Observer — triggers when sentinel enters viewport
+    useEffect(() => {
+        if (observerRef.current) observerRef.current.disconnect();
+
+        observerRef.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+                    setPage(prev => prev + 1);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sentinelRef.current) observerRef.current.observe(sentinelRef.current);
+
+        return () => observerRef.current?.disconnect();
+    }, [hasMore, loadingMore, loading]);
 
     const diffColors = {
         Easy: { label: styles.badgeEasy, active: styles.activeEasy },
         Medium: { label: styles.badgeMedium, active: styles.activeMedium },
         Hard: { label: styles.badgeHard, active: styles.activeHard },
     };
+
+    // Client-side filter (on already-loaded data when no server filter)
+    const filtered = problems.filter(p => {
+        const matchSearch = !search.trim() ||
+            p.title.toLowerCase().includes(search.toLowerCase()) ||
+            p.tags?.some(t => t.toLowerCase().includes(search.toLowerCase()));
+        const matchDiff = difficulty === 'All' || p.difficulty === difficulty;
+        return matchSearch && matchDiff;
+    });
 
     return (
         <>
@@ -45,10 +104,9 @@ export default function ProblemsSolve() {
                         <p className={styles.heroSub}>
                             Sharpen your skills with hand-picked problems across all difficulty levels.
                         </p>
-                        {/* Stats Row */}
                         <div className={styles.heroStats}>
                             <div className={styles.heroStat}>
-                                <span className={styles.heroStatNum}>{problems.length}</span>
+                                <span className={styles.heroStatNum}>{total}</span>
                                 <span className={styles.heroStatLabel}>Total</span>
                             </div>
                             <div className={styles.heroStatDivider} />
@@ -108,7 +166,7 @@ export default function ProblemsSolve() {
 
                     {/* Results count */}
                     <p className={styles.resultCount}>
-                        Showing <strong>{filtered.length}</strong> of <strong>{problems.length}</strong> problems
+                        Showing <strong>{problems.length}</strong> of <strong>{total}</strong> problems
                     </p>
 
                     {/* Table */}
@@ -185,6 +243,24 @@ export default function ProblemsSolve() {
                                     )}
                                 </tbody>
                             </table>
+
+                            {/* Sentinel for Infinite Scroll */}
+                            <div ref={sentinelRef} style={{ height: '1px' }} />
+
+                            {/* Loading more spinner */}
+                            {loadingMore && (
+                                <div className={styles.loadingMore}>
+                                    <div className={styles.spinner} />
+                                    <p>Loading more...</p>
+                                </div>
+                            )}
+
+                            {/* End of list */}
+                            {!hasMore && problems.length > 0 && (
+                                <div className={styles.endMessage}>
+                                    ✅ All {total} problems loaded
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

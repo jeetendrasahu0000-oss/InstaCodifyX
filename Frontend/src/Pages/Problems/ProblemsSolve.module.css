@@ -760,3 +760,32 @@
     max-width: 120px; /* mobile me chhota */
   }
 }
+
+/* Loading more row */
+.loadingMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    color: var(--text-muted, #888);
+    font-size: 0.9rem;
+}
+
+/* End of list message */
+.endMessage {
+    text-align: center;
+    padding: 18px;
+    font-size: 0.85rem;
+    color: var(--text-muted, #888);
+    border-top: 1px solid var(--border, #eee);
+}
+/* Hide Tags & Action on mobile */
+@media (max-width: 640px) {
+  .table thead th:nth-child(4),
+  .table tbody td:nth-child(4),
+  .table thead th:nth-child(5),
+  .table tbody td:nth-child(5) {
+    display: none;
+  }
+}

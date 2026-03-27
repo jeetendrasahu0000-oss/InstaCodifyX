@@ -26,11 +26,11 @@ export const runCode = async (req, res) => {
 
     const result = response.data;
 
-    // ✅ Decode
+   
     const decode = (str) =>
       str ? Buffer.from(str, "base64").toString("utf-8") : "";
 
-    console.log("✅ API RESPONSE:", result);
+    console.log(" API RESPONSE:", result);
 
     return res.json({
       stdout: decode(result.stdout),
