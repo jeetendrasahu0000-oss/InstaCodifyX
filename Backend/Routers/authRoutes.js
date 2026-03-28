@@ -4,6 +4,8 @@ import {
   verifyEmailOtp,
   signup,
   login,
+  logout,
+  refreshAccessToken,
   forgotPasswordOtp,
   forgotVerifyOtp,
   resetPassword,
@@ -21,11 +23,15 @@ router.post('/forgot-otp',        otpLimiter, forgotPasswordOtp)
 router.post('/forgot-verify-otp', otpLimiter, forgotVerifyOtp)
 
 // Auth routes
-router.post('/signup', authLimiter, signup)
-router.post('/login',  authLimiter, login)
+router.post('/signup',       authLimiter, signup)
+router.post('/login',        authLimiter, login)
 router.post('/reset/:token', resetPassword)
 
+// Token
+router.post('/refresh-token', refreshAccessToken)
+
 // Protected
-router.get('/me', protect, getMe)
+router.get('/me',      protect, getMe)
+router.post('/logout', protect, logout)
 
 export default router

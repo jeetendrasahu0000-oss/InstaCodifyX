@@ -1,15 +1,20 @@
-import express from "express";
+import express from "express"
 import {
   getProfile,
   updateProfile,
   getUserByUsername,
-} from "../Controller/userController.js";
-import { protect } from "../Middleware/authMiddleware.js";
+} from "../Controller/userController.js"
 
-const router = express.Router();
+import { protect } from "../Middleware/authMiddleware.js"
+import { upload } from "../Middleware/upload.js"   // 👈 IMPORTANT
 
-router.get("/profile", protect, getProfile);
-router.put("/profile", protect, updateProfile);
-router.get("/:username", getUserByUsername);
+const router = express.Router()
 
-export default router;
+router.get("/profile", protect, getProfile)
+
+// 🔥 FIX: multer add kiya
+router.put("/profile", protect, upload.single("avatar"), updateProfile)
+
+router.get("/:username", getUserByUsername)
+
+export default router

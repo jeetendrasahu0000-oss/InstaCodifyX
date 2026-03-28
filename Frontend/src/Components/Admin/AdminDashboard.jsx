@@ -147,7 +147,7 @@ function DashboardHome({ admin, navItems }) {
             <span className={styles.welcomeName}>
               {admin?.username ?? "Admin"}
             </span>{" "}
-            👋
+
           </h1>
           <p className={styles.welcomeSub}>
             Here's what's happening on your platform today.

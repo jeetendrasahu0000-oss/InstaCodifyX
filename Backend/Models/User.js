@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-    sparse: true,          // ← allows multiple null values (partial docs)
+    sparse: true,
     trim: true,
     lowercase: true,
     minlength: [3, 'Username must be at least 3 characters'],
@@ -55,7 +55,18 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null
   },
-  // Stats (for profile/header)
+
+  // ── Auth Token ──────────────────────────────────────────
+  token: {
+    type: String,
+    default: null        // refresh token yahan store hoga
+  },
+  tokenExpire: {
+    type: Date,
+    default: null        // token ki expiry date
+  },
+
+  // ── Stats ───────────────────────────────────────────────
   solved: {
     type: Number,
     default: 0

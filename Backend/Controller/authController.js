@@ -2,7 +2,7 @@ import User from '../Models/User.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
-import { sendEmail, sendOTPEmail } from '../Utils/sendEmail.js'  // ← named imports
+import { sendEmail, sendOTPEmail } from '../Utils/sendEmail.js'
 
 // ─── Helper: Generate 6-digit OTP ─────────────────────────────────────────────
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
@@ -22,16 +22,14 @@ export const sendEmailOtp = async (req, res) => {
 
     const emailNorm = email.toLowerCase().trim()
 
-    // Check if already fully registered
     const existing = await User.findOne({ email: emailNorm })
     if (existing && existing.isVerified && existing.fullname && existing.password) {
       return res.status(400).json({ message: 'Email already registered. Please sign in.' })
     }
 
     const otp = generateOTP()
-    const otpExpire = new Date(Date.now() + 10 * 60 * 1000) // 10 min
+    const otpExpire = new Date(Date.now() + 10 * 60 * 1000)
 
-    // Upsert — only email required, validation won't fail now
     await User.findOneAndUpdate(
       { email: emailNorm },
       { $set: { otp, otpExpire, isVerified: false } },
@@ -82,7 +80,6 @@ export const verifyEmailOtp = async (req, res) => {
       return res.status(400).json({ message: 'Invalid OTP. Please try again.' })
     }
 
-    // ✅ OTP correct — clear it
     await User.findOneAndUpdate(
       { email: email.toLowerCase().trim() },
       { $unset: { otp: '', otpExpire: '' } },
@@ -100,7 +97,7 @@ export const verifyEmailOtp = async (req, res) => {
   }
 }
 
-// ─── SIGNUP (after email OTP verified) ───────────────────────────────────────
+// ─── SIGNUP (after email OTP verified) ────────────────────────────────────────
 export const signup = async (req, res) => {
   try {
     const { fullname, username, email, password } = req.body
@@ -124,7 +121,6 @@ export const signup = async (req, res) => {
     const emailNorm    = email.toLowerCase().trim()
     const usernameNorm = username.toLowerCase().trim()
 
-    // Check username taken
     const usernameTaken = await User.findOne({ username: usernameNorm, isVerified: true })
     if (usernameTaken) {
       return res.status(400).json({ message: 'Username already taken. Try another.' })
@@ -196,14 +192,27 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials.' })
     }
 
-    const token = jwt.sign(
+    // ── Access Token (short-lived) ─────────────────────────────────────────
+    const accessToken = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    )
+
+    // ── Refresh Token (long-lived) — save in DB ────────────────────────────
+    const refreshToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_REFRESH_SECRET,
       { expiresIn: '7d' }
     )
 
+    user.token       = refreshToken
+    user.tokenExpire = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)  // 7 din
+    await user.save()
+
     return res.status(200).json({
-      token,
+      token:        accessToken,
+      refreshToken: refreshToken,
       user: {
         _id:        user._id,
         fullname:   user.fullname,
@@ -228,6 +237,71 @@ export const login = async (req, res) => {
   }
 }
 
+// ─── LOGOUT ───────────────────────────────────────────────────────────────────
+export const logout = async (req, res) => {
+  try {
+    // req.user middleware se aata hai (protect route)
+    await User.findByIdAndUpdate(req.user.id, {
+      $set: { token: null, tokenExpire: null }
+    })
+
+    return res.status(200).json({ message: 'Logged out successfully.' })
+
+  } catch (err) {
+    console.error('Logout error:', err)
+    return res.status(500).json({
+      message: 'Server error. Please try again.',
+      ...(process.env.NODE_ENV === 'development' && { debug: err.message })
+    })
+  }
+}
+
+// ─── REFRESH TOKEN ────────────────────────────────────────────────────────────
+export const refreshAccessToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body
+
+    if (!refreshToken) {
+      return res.status(400).json({ message: 'Refresh token is required.' })
+    }
+
+    // Verify token
+    let decoded
+    try {
+      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+    } catch {
+      return res.status(401).json({ message: 'Invalid or expired refresh token.' })
+    }
+
+    // DB mein check karo — token match hona chahiye
+    const user = await User.findById(decoded.id)
+
+    if (!user || user.token !== refreshToken) {
+      return res.status(401).json({ message: 'Refresh token mismatch. Please login again.' })
+    }
+
+    if (new Date() > new Date(user.tokenExpire)) {
+      return res.status(401).json({ message: 'Refresh token expired. Please login again.' })
+    }
+
+    // Naya access token do
+    const newAccessToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    )
+
+    return res.status(200).json({ token: newAccessToken })
+
+  } catch (err) {
+    console.error('refreshAccessToken error:', err)
+    return res.status(500).json({
+      message: 'Server error. Please try again.',
+      ...(process.env.NODE_ENV === 'development' && { debug: err.message })
+    })
+  }
+}
+
 // ─── FORGOT PASSWORD — Send OTP ───────────────────────────────────────────────
 export const forgotPasswordOtp = async (req, res) => {
   try {
@@ -242,7 +316,6 @@ export const forgotPasswordOtp = async (req, res) => {
       isVerified: true
     })
 
-    // Always return success (prevent email enumeration)
     if (!user || !user.fullname) {
       return res.status(200).json({ message: 'If that email exists, an OTP has been sent.' })
     }
@@ -340,7 +413,7 @@ export const resetPassword = async (req, res) => {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
 
     const user = await User.findOne({
-      resetToken:        hashedToken,
+      resetToken:       hashedToken,
       resetTokenExpire: { $gt: new Date() }
     })
 
@@ -348,9 +421,9 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: 'Reset link is invalid or has expired.' })
     }
 
-    user.password          = await bcrypt.hash(password, 12)
-    user.resetToken        = undefined
-    user.resetTokenExpire  = undefined
+    user.password         = await bcrypt.hash(password, 12)
+    user.resetToken       = undefined
+    user.resetTokenExpire = undefined
     await user.save()
 
     return res.status(200).json({ message: 'Password updated successfully! You can now sign in.' })
@@ -364,11 +437,11 @@ export const resetPassword = async (req, res) => {
   }
 }
 
-// ─── GET CURRENT USER (protected) ────────────────────────────────────────────
+// ─── GET CURRENT USER (protected) ─────────────────────────────────────────────
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-      .select('-password -otp -otpExpire -resetToken -resetTokenExpire')
+      .select('-password -otp -otpExpire -resetToken -resetTokenExpire -token -tokenExpire')
 
     if (!user) {
       return res.status(404).json({ message: 'User not found.' })
