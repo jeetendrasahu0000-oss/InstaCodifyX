@@ -1,41 +1,46 @@
-import { useState } from 'react';
-import { submitSetterRequestAPI } from './adminApi';
+import { useState } from "react";
+import { submitSetterRequestAPI } from "./adminApi";
 
 const SetterRegister = () => {
-    const [form, setForm] = useState({ username: '', email: '', password: '', confirm: '' });
-    const [status, setStatus] = useState(null);
-    const [msg, setMsg] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+  const [status, setStatus] = useState(null);
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (form.password !== form.confirm) {
-            setMsg('Passwords do not match.');
-            setStatus('error');
-            return;
-        }
-        setLoading(true);
-        setMsg('');
-        try {
-            const { data } = await submitSetterRequestAPI({
-                username: form.username,
-                email: form.email,
-                password: form.password,
-            });
-            setMsg(data.message);
-            setStatus('success');
-            setSubmitted(true);
-        } catch (err) {
-            setMsg(err.response?.data?.message || 'Something went wrong.');
-            setStatus('error');
-        }
-        setLoading(false);
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.password !== form.confirm) {
+      setMsg("Passwords do not match.");
+      setStatus("error");
+      return;
+    }
+    setLoading(true);
+    setMsg("");
+    try {
+      const { data } = await submitSetterRequestAPI({
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
+      setMsg(data.message);
+      setStatus("success");
+      setSubmitted(true);
+    } catch (err) {
+      setMsg(err.response?.data?.message || "Something went wrong.");
+      setStatus("error");
+    }
+    setLoading(false);
+  };
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -263,91 +268,109 @@ const SetterRegister = () => {
         .sr-login-link a:hover { color: #a855f7; }
       `}</style>
 
-            <div className="sr-root">
-                <div className="sr-grid" />
-                <div className="sr-card">
-                    <div className="sr-logo">CodeifyX</div>
+      <div className="sr-root">
+        <div className="sr-grid" />
+        <div className="sr-card">
+          <div className="sr-logo">CodeifyX</div>
 
-                    {submitted ? (
-                        <div className="sr-success-card">
-                            <div className="sr-success-icon">📬</div>
-                            <div className="sr-success-title">Request Submitted!</div>
-                            <p className="sr-success-text">
-                                Your request has been sent to the admin team.<br />
-                                <strong>Check your email</strong> for a confirmation. You'll be notified once approved.
-                            </p>
-                            <div className="sr-steps">
-                                <div className="sr-step"><span>✉️</span> Confirmation email sent to your inbox</div>
-                                <div className="sr-step"><span>⏳</span> Admin will review within 24–48 hours</div>
-                                <div className="sr-step"><span>🔓</span> Login link will be emailed on approval</div>
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            <h2 className="sr-title">Become a Problem Setter</h2>
-                            <p className="sr-subtitle">Submit your request — admin will review and approve your access.</p>
-
-                            {msg && <div className={`sr-alert ${status}`}>{msg}</div>}
-
-                            <form onSubmit={handleSubmit}>
-                                <div className="sr-field">
-                                    <label className="sr-label">Username</label>
-                                    <input
-                                        className="sr-input"
-                                        placeholder="your_username"
-                                        value={form.username}
-                                        onChange={e => setForm({ ...form, username: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                                <div className="sr-field">
-                                    <label className="sr-label">Email Address</label>
-                                    <input
-                                        type="email"
-                                        className="sr-input"
-                                        placeholder="you@example.com"
-                                        value={form.email}
-                                        onChange={e => setForm({ ...form, email: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                                <div className="sr-field">
-                                    <label className="sr-label">Password</label>
-                                    <input
-                                        type="password"
-                                        className="sr-input"
-                                        placeholder="Min 8 characters"
-                                        minLength={8}
-                                        value={form.password}
-                                        onChange={e => setForm({ ...form, password: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                                <div className="sr-field">
-                                    <label className="sr-label">Confirm Password</label>
-                                    <input
-                                        type="password"
-                                        className="sr-input"
-                                        placeholder="Repeat password"
-                                        value={form.confirm}
-                                        onChange={e => setForm({ ...form, confirm: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                                <button type="submit" className="sr-btn" disabled={loading}>
-                                    {loading ? 'Submitting...' : 'Submit Request →'}
-                                </button>
-                            </form>
-                        </>
-                    )}
-
-                    <div className="sr-login-link">
-                        Already approved? <a href="/admin/login">Login here</a>
-                    </div>
+          {submitted ? (
+            <div className="sr-success-card">
+              <div className="sr-success-icon">📬</div>
+              <div className="sr-success-title">Request Submitted!</div>
+              <p className="sr-success-text">
+                Your request has been sent to the admin team.
+                <br />
+                <strong>Check your email</strong> for a confirmation. You'll be
+                notified once approved.
+              </p>
+              <div className="sr-steps">
+                <div className="sr-step">
+                  <span>✉️</span> Confirmation email sent to your inbox
                 </div>
+                <div className="sr-step">
+                  <span>⏳</span> Admin will review within 24–48 hours
+                </div>
+                <div className="sr-step">
+                  <span>🔓</span> Login link will be emailed on approval
+                </div>
+              </div>
             </div>
-        </>
-    );
+          ) : (
+            <>
+              <h2 className="sr-title">Become a Problem Setter</h2>
+              <p className="sr-subtitle">
+                Submit your request — admin will review and approve your access.
+              </p>
+
+              {msg && <div className={`sr-alert ${status}`}>{msg}</div>}
+
+              <form onSubmit={handleSubmit}>
+                <div className="sr-field">
+                  <label className="sr-label">Username</label>
+                  <input
+                    className="sr-input"
+                    placeholder="your_username"
+                    value={form.username}
+                    onChange={(e) =>
+                      setForm({ ...form, username: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="sr-field">
+                  <label className="sr-label">Email Address</label>
+                  <input
+                    type="email"
+                    className="sr-input"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="sr-field">
+                  <label className="sr-label">Password</label>
+                  <input
+                    type="password"
+                    className="sr-input"
+                    placeholder="Min 8 characters"
+                    minLength={8}
+                    value={form.password}
+                    onChange={(e) =>
+                      setForm({ ...form, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="sr-field">
+                  <label className="sr-label">Confirm Password</label>
+                  <input
+                    type="password"
+                    className="sr-input"
+                    placeholder="Repeat password"
+                    value={form.confirm}
+                    onChange={(e) =>
+                      setForm({ ...form, confirm: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <button type="submit" className="sr-btn" disabled={loading}>
+                  {loading ? "Submitting..." : "Submit Request →"}
+                </button>
+              </form>
+            </>
+          )}
+
+          <div className="sr-login-link">
+            Already approved? <a href="/admin/login">Login here</a>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default SetterRegister;

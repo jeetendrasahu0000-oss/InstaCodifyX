@@ -1,337 +1,222 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllSetterRequestsAPI, approveSetterRequestAPI, rejectSetterRequestAPI } from './adminApi';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  getAllSetterRequestsAPI,
+  approveSetterRequestAPI,
+  rejectSetterRequestAPI,
+} from "./adminApi";
+import styles from "./SetterRequests.module.css"; // Make sure this matches the filename exactly
 
 const SetterRequests = () => {
-    const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('pending');
-    const [actionId, setActionId] = useState(null);
-    const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("pending");
+  const [actionId, setActionId] = useState(null);
+  const navigate = useNavigate();
 
-    const fetchRequests = async () => {
-        setLoading(true);
-        try {
-            const { data } = await getAllSetterRequestsAPI();
-            setRequests(data);
-        } catch (err) {
-            console.error(err);
-        }
-        setLoading(false);
-    };
+  // Dummy images for different filter states
+  const filterImages = {
+    pending:
+      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"%3E%3C/path%3E%3C/svg%3E',
+    approved:
+      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="%2310b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M22 11.08V12a10 10 0 1 1-5.93-9.14"%3E%3C/path%3E%3Cpolyline points="22 4 12 14.01 9 11.01"%3E%3C/polyline%3E%3C/svg%3E',
+    rejected:
+      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="%23ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"%3E%3Ccircle cx="12" cy="12" r="10"%3E%3C/circle%3E%3Cline x1="18" y1="6" x2="6" y2="18"%3E%3C/line%3E%3Cline x1="6" y1="6" x2="18" y2="18"%3E%3C/line%3E%3C/svg%3E',
+  };
 
-    useEffect(() => { fetchRequests(); }, []);
+  const [currentImage, setCurrentImage] = useState(filterImages.pending);
 
-    const handleApprove = async (id) => {
-        if (!window.confirm('Approve this request? An account will be created and email sent.')) return;
-        setActionId(id);
-        try {
-            await approveSetterRequestAPI(id);
-            await fetchRequests();
-        } catch (err) {
-            alert(err.response?.data?.message || 'Error approving request.');
-        }
-        setActionId(null);
-    };
+  const fetchRequests = async () => {
+    setLoading(true);
+    try {
+      const { data } = await getAllSetterRequestsAPI();
+      setRequests(data);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
 
-    const handleReject = async (id) => {
-        if (!window.confirm('Reject this request? The applicant will be notified via email.')) return;
-        setActionId(id);
-        try {
-            await rejectSetterRequestAPI(id);
-            await fetchRequests();
-        } catch (err) {
-            alert(err.response?.data?.message || 'Error rejecting request.');
-        }
-        setActionId(null);
-    };
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
-    const filtered = requests.filter(r => r.status === filter);
+  // Update image when filter changes
+  useEffect(() => {
+    setCurrentImage(filterImages[filter]);
+  }, [filter]);
 
-    const counts = {
-        pending: requests.filter(r => r.status === 'pending').length,
-        approved: requests.filter(r => r.status === 'approved').length,
-        rejected: requests.filter(r => r.status === 'rejected').length,
-    };
+  const handleApprove = async (id) => {
+    if (
+      !window.confirm(
+        "Approve this request? An account will be created and email sent.",
+      )
+    )
+      return;
+    setActionId(id);
+    try {
+      await approveSetterRequestAPI(id);
+      await fetchRequests();
+    } catch (err) {
+      alert(err.response?.data?.message || "Error approving request.");
+    }
+    setActionId(null);
+  };
 
-    return (
-        <>
-            <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  const handleReject = async (id) => {
+    if (
+      !window.confirm(
+        "Reject this request? The applicant will be notified via email.",
+      )
+    )
+      return;
+    setActionId(id);
+    try {
+      await rejectSetterRequestAPI(id);
+      await fetchRequests();
+    } catch (err) {
+      alert(err.response?.data?.message || "Error rejecting request.");
+    }
+    setActionId(null);
+  };
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  const filtered = requests.filter((r) => r.status === filter);
 
-        .srp-page {
-          min-height: 100vh;
-          background: #080b12;
-          font-family: 'Space Grotesk', sans-serif;
-          color: #fff;
-          padding: 32px;
-        }
+  const counts = {
+    pending: requests.filter((r) => r.status === "pending").length,
+    approved: requests.filter((r) => r.status === "approved").length,
+    rejected: requests.filter((r) => r.status === "rejected").length,
+  };
 
-        .srp-topbar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 32px;
-          flex-wrap: wrap;
-          gap: 16px;
-        }
+  return (
+    <div className={styles.srpPage}>
+      {/* Top Bar */}
+      <div className={styles.srpTopbar}>
+        <button
+          className={styles.srpBack}
+          onClick={() => navigate("/admin/dashboard")}
+        >
+          ← Back to Dashboard
+        </button>
+        <h2 className={styles.srpHeading}>
+          Setter <span>Requests</span>
+        </h2>
+      </div>
 
-        .srp-back {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.08);
-          color: #aaa;
-          padding: 8px 16px;
-          border-radius: 8px;
-          font-size: 13px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s;
-          font-family: 'Space Grotesk', sans-serif;
-        }
-        .srp-back:hover { background: rgba(255,255,255,0.08); color: #fff; }
-
-        .srp-heading { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-        .srp-heading span { color: #7c3aed; }
-
-        .srp-stats {
-          display: flex;
-          gap: 12px;
-          margin-bottom: 28px;
-          flex-wrap: wrap;
-        }
-
-        .srp-stat {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 12px;
-          padding: 16px 24px;
-          min-width: 120px;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .srp-stat:hover { background: rgba(255,255,255,0.05); }
-        .srp-stat.active-pending  { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
-        .srp-stat.active-approved { border-color: #10b981; background: rgba(16,185,129,0.08); }
-        .srp-stat.active-rejected { border-color: #ef4444; background: rgba(239,68,68,0.08); }
-
-        .srp-stat-num {
-          font-size: 28px;
-          font-weight: 700;
-          font-family: 'JetBrains Mono', monospace;
-          line-height: 1;
-          margin-bottom: 4px;
-        }
-        .srp-stat-num.pending  { color: #f59e0b; }
-        .srp-stat-num.approved { color: #10b981; }
-        .srp-stat-num.rejected { color: #ef4444; }
-
-        .srp-stat-label {
-          font-size: 11px;
-          color: #666;
-          text-transform: uppercase;
-          letter-spacing: 0.8px;
-          font-weight: 600;
-        }
-
-        .srp-empty {
-          text-align: center;
-          padding: 80px 32px;
-          color: #444;
-        }
-        .srp-empty-icon { font-size: 48px; margin-bottom: 16px; }
-        .srp-empty-text { font-size: 15px; color: #555; }
-
-        .srp-list { display: flex; flex-direction: column; gap: 10px; }
-
-        .srp-item {
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 14px;
-          padding: 20px 24px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          flex-wrap: wrap;
-          transition: border-color 0.2s;
-          animation: fadeUp 0.3s ease both;
-        }
-        .srp-item:hover { border-color: rgba(124,58,237,0.2); }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .srp-item-left { display: flex; align-items: center; gap: 16px; }
-
-        .srp-avatar {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-          font-weight: 700;
-          color: #fff;
-          flex-shrink: 0;
-        }
-
-        .srp-name  { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-        .srp-email { font-size: 12px; color: #666; font-family: 'JetBrains Mono', monospace; }
-        .srp-date  { font-size: 11px; color: #555; margin-top: 4px; }
-
-        .srp-badge {
-          padding: 4px 10px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.8px;
-        }
-        .srp-badge.pending  { background: rgba(245,158,11,0.1);  color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
-        .srp-badge.approved { background: rgba(16,185,129,0.1);  color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
-        .srp-badge.rejected { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
-
-        .srp-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
-        .srp-approve-btn, .srp-reject-btn {
-          padding: 8px 18px;
-          border-radius: 8px;
-          font-size: 13px;
-          font-weight: 600;
-          cursor: pointer;
-          font-family: 'Space Grotesk', sans-serif;
-          transition: all 0.2s;
-          border: none;
-        }
-        .srp-approve-btn {
-          background: rgba(16,185,129,0.12);
-          color: #10b981;
-          border: 1px solid rgba(16,185,129,0.25);
-        }
-        .srp-approve-btn:hover:not(:disabled) { background: rgba(16,185,129,0.22); }
-
-        .srp-reject-btn {
-          background: rgba(239,68,68,0.08);
-          color: #ef4444;
-          border: 1px solid rgba(239,68,68,0.2);
-        }
-        .srp-reject-btn:hover:not(:disabled) { background: rgba(239,68,68,0.18); }
-
-        .srp-approve-btn:disabled, .srp-reject-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        .srp-loading {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 200px;
-          color: #555;
-          font-size: 15px;
-          gap: 10px;
-        }
-
-        .srp-spinner {
-          width: 20px;
-          height: 20px;
-          border: 2px solid rgba(124,58,237,0.2);
-          border-top-color: #7c3aed;
-          border-radius: 50%;
-          animation: spin 0.7s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-      `}</style>
-
-            <div className="srp-page">
-                <div className="srp-topbar">
-                    <button className="srp-back" onClick={() => navigate('/admin/dashboard')}>
-                        ← Back to Dashboard
-                    </button>
-                    <h2 className="srp-heading">Setter <span>Requests</span></h2>
-                </div>
-
-                {/* Stats / Filter Tabs */}
-                <div className="srp-stats">
-                    {['pending', 'approved', 'rejected'].map(s => (
-                        <div
-                            key={s}
-                            className={`srp-stat ${filter === s ? `active-${s}` : ''}`}
-                            onClick={() => setFilter(s)}
-                        >
-                            <div className={`srp-stat-num ${s}`}>{counts[s]}</div>
-                            <div className="srp-stat-label">{s}</div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Content */}
-                {loading ? (
-                    <div className="srp-loading">
-                        <div className="srp-spinner" /> Loading requests...
-                    </div>
-                ) : filtered.length === 0 ? (
-                    <div className="srp-empty">
-                        <div className="srp-empty-icon">
-                            {filter === 'pending' ? '📭' : filter === 'approved' ? '✅' : '❌'}
-                        </div>
-                        <div className="srp-empty-text">No {filter} requests found</div>
-                    </div>
-                ) : (
-                    <div className="srp-list">
-                        {filtered.map((r, i) => (
-                            <div
-                                className="srp-item"
-                                key={r._id}
-                                style={{ animationDelay: `${i * 0.04}s` }}
-                            >
-                                <div className="srp-item-left">
-                                    <div className="srp-avatar">{r.username[0].toUpperCase()}</div>
-                                    <div>
-                                        <div className="srp-name">{r.username}</div>
-                                        <div className="srp-email">{r.email}</div>
-                                        <div className="srp-date">
-                                            Applied: {new Date(r.createdAt).toLocaleDateString('en-IN', {
-                                                day: 'numeric', month: 'short', year: 'numeric',
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="srp-actions">
-                                    <span className={`srp-badge ${r.status}`}>{r.status}</span>
-                                    {r.status === 'pending' && (
-                                        <>
-                                            <button
-                                                className="srp-approve-btn"
-                                                disabled={actionId === r._id}
-                                                onClick={() => handleApprove(r._id)}
-                                            >
-                                                {actionId === r._id ? '...' : '✓ Approve'}
-                                            </button>
-                                            <button
-                                                className="srp-reject-btn"
-                                                disabled={actionId === r._id}
-                                                onClick={() => handleReject(r._id)}
-                                            >
-                                                {actionId === r._id ? '...' : '✕ Reject'}
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+      {/* Stats & Image Container */}
+      <div className={styles.srpStatsContainer}>
+        <div className={styles.srpStats}>
+          <div
+            className={`${styles.srpStat} ${filter === "pending" ? styles.activePending : ""}`}
+            onClick={() => setFilter("pending")}
+          >
+            <div className={`${styles.srpStatNum} ${styles.pending}`}>
+              {counts.pending}
             </div>
-        </>
-    );
+            <div className={styles.srpStatLabel}>pending</div>
+          </div>
+          <div
+            className={`${styles.srpStat} ${filter === "approved" ? styles.activeApproved : ""}`}
+            onClick={() => setFilter("approved")}
+          >
+            <div className={`${styles.srpStatNum} ${styles.approved}`}>
+              {counts.approved}
+            </div>
+            <div className={styles.srpStatLabel}>approved</div>
+          </div>
+          <div
+            className={`${styles.srpStat} ${filter === "rejected" ? styles.activeRejected : ""}`}
+            onClick={() => setFilter("rejected")}
+          >
+            <div className={`${styles.srpStatNum} ${styles.rejected}`}>
+              {counts.rejected}
+            </div>
+            <div className={styles.srpStatLabel}>rejected</div>
+          </div>
+        </div>
+
+        {/* Image that changes on filter click */}
+        <div className={styles.srpImageContainer}>
+          <img
+            src={currentImage}
+            alt={`${filter} requests`}
+            className={styles.srpFilterImage}
+          />
+          <div className={styles.srpImageCaption}>
+            {filter === "pending" && "⏳ Awaiting Review"}
+            {filter === "approved" && "✓ Approved Applications"}
+            {filter === "rejected" && "✗ Rejected Applications"}
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      {loading ? (
+        <div className={styles.srpLoading}>
+          <div className={styles.srpSpinner} /> Loading requests...
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className={styles.srpEmpty}>
+          <div className={styles.srpEmptyIcon}>
+            {filter === "pending" ? "📭" : filter === "approved" ? "✅" : "❌"}
+          </div>
+          <div className={styles.srpEmptyText}>No {filter} requests found</div>
+        </div>
+      ) : (
+        <div className={styles.srpList}>
+          {filtered.map((r, i) => (
+            <div
+              className={styles.srpItem}
+              key={r._id}
+              style={{ animationDelay: `${i * 0.04}s` }}
+            >
+              <div className={styles.srpItemLeft}>
+                <div className={styles.srpAvatar}>
+                  {r.username[0].toUpperCase()}
+                </div>
+                <div>
+                  <div className={styles.srpName}>{r.username}</div>
+                  <div className={styles.srpEmail}>{r.email}</div>
+                  <div className={styles.srpDate}>
+                    Applied:{" "}
+                    {new Date(r.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.srpActions}>
+                <span className={`${styles.srpBadge} ${styles[r.status]}`}>
+                  {r.status}
+                </span>
+                {r.status === "pending" && (
+                  <>
+                    <button
+                      className={styles.srpApproveBtn}
+                      disabled={actionId === r._id}
+                      onClick={() => handleApprove(r._id)}
+                    >
+                      {actionId === r._id ? "..." : "✓ Approve"}
+                    </button>
+                    <button
+                      className={styles.srpRejectBtn}
+                      disabled={actionId === r._id}
+                      onClick={() => handleReject(r._id)}
+                    >
+                      {actionId === r._id ? "..." : "✕ Reject"}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default SetterRequests;
