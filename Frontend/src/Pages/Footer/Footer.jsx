@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Footer.module.css'
 
-const LOGO = 'https://i.pinimg.com/1200x/17/43/c7/1743c7e316bba74fd234568fe0c91acb.jpg'
+const LOGO = '../../../public/codifyxPngOrignal.png'
 
 const LINKS = {
   Platform: [
@@ -63,7 +63,7 @@ export default function Footer() {
       <div className={styles.topStrip}>
         <div className={styles.topStripInner}>
           <div className={styles.topStripLeft}>
-            <div className={styles.topStripIcon}>🚀</div>
+           
             <div>
               <p className={styles.topStripTitle}>Start your coding journey today</p>
               <p className={styles.topStripSub}>Join 50,000+ developers preparing for top tech interviews on CodifyX</p>
@@ -87,7 +87,7 @@ export default function Footer() {
         <div className={styles.brandCol}>
           <Link to="/" className={styles.brandLogo}>
             <img src={LOGO} alt="CodifyX" className={styles.brandLogoImg} />
-            <span className={styles.brandLogoText}>CodifyX</span>
+           
           </Link>
 
           <p className={styles.brandDesc}>
@@ -156,7 +156,7 @@ export default function Footer() {
       <div className={styles.newsletter}>
         <div className={styles.newsletterBox}>
           <div className={styles.newsletterLeft}>
-            <p className={styles.newsletterTitle}>📬 Stay updated with CodifyX</p>
+            <p className={styles.newsletterTitle}>Stay updated with CodifyX</p>
             <p className={styles.newsletterSub}>
               Get weekly contest alerts, new problems, and interview tips — no spam.
             </p>

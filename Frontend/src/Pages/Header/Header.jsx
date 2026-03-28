@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { label: 'Store', to: '/store' },
 ]
 
-const LOGO = 'https://i.pinimg.com/1200x/17/43/c7/1743c7e316bba74fd234568fe0c91acb.jpg'
+const LOGO = '../../../public/codifyxPngOrignal.png'
 
 const getInitials = (name = '') =>
   name.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2) || '?'
@@ -296,7 +296,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className={style.logo}>
             <img src={LOGO} alt="CodifyX" className={style.logoImg} />
-            <span className={style.logoText}>CodifyX</span>
+            
           </Link>
 
           {/* Desktop nav */}

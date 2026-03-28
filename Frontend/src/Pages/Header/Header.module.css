@@ -40,7 +40,7 @@
 
 /* ══════════ LOGO ══════════ */
 .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; flex-shrink: 0; margin-right: 6px; }
-.logoImg { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1); }
+.logoImg { width: 104px; height: auto; border-radius: 9px; object-fit: cover; background-color: transparent;  }
 .logoText { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--text-hi); letter-spacing: 0.03em; }
 
 /* ══════════ DESKTOP NAV ══════════ */
