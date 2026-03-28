@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import api from '../../utils/api'
 import styles from './Auth.module.css'
 
-const LOGO = 'https://i.pinimg.com/1200x/17/43/c7/1743c7e316bba74fd234568fe0c91acb.jpg'
+const LOGO = '../../../public/codifyxPngOrignal.png'
 
 const IconAt = () => (
   <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@ export default function Forgot() {
           <div className={styles.logoWrap}>
             <img src={LOGO} alt="CodifyX" className={styles.logo} />
           </div>
-          <span className={styles.brand}>CodifyX</span>
+         
         </div>
 
         <div className={styles.header}>

@@ -70,17 +70,16 @@
   position: absolute;
   inset: -6px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3));
-  filter: blur(12px);
+ 
+ 
   z-index: -1;
 }
 .logo {
-  width: 56px;
-  height: 56px;
+  width: 156px;
+  height: auto;
   border-radius: 14px;
-  object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+ 
+ 
 }
 .brand {
   font-family: 'Syne', sans-serif;
@@ -488,10 +487,10 @@
   content:'';
   position:absolute; inset:-6px;
   border-radius:20px;
-  background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(139,92,246,0.3));
-  filter:blur(12px); z-index:-1;
+
+  
 }
-.logo { width:54px; height:54px; border-radius:14px; object-fit:cover; border:1px solid rgba(255,255,255,0.12); box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+.logo { width:154px; height:auto; }
 .brand {
   font-family:'Syne',sans-serif; font-size:.95rem; font-weight:800;
   letter-spacing:.1em; text-transform:uppercase;
