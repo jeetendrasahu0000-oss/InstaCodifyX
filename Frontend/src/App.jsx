@@ -30,6 +30,11 @@ import { AdminProvider, useAdmin } from "./Components/Admin/AdminContext";
 
 import ProblemsSolve from "./Pages/Problems/ProblemsSolve";
 import ProblemDetail from "./Pages/Problems/Problemdetail";
+import HrPreparation from "./Pages/Interview/HRinterview/HrPreparation";
+import StartInterview from "./Pages/Interview/HRinterview/StartInterview";
+import ScheduleInterview from "./Pages/Interview/HRinterview/ScheduleInterview";
+import HrAdmin from "./Components/HrAdmin/HrAdmin";
+
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 
@@ -81,7 +86,7 @@ const App = () => {
             />
             <Route
               path="/interview-preparation/hr-prep"
-              element={<div>HR Prep</div>}
+              element={<HrPreparation />}
             />
             <Route
               path="/interview-preparation/technical"
@@ -92,7 +97,7 @@ const App = () => {
               element={<MachineTest />}
             />
             <Route
-              path="/interview-preparation/schedule-mock"
+              path="/interview-preparation/hr-prep"
               element={<div>Schedule Mock</div>}
             />
             <Route
@@ -194,17 +199,19 @@ const App = () => {
                       fontFamily: "Inter,sans-serif",
                     }}
                   >
-                    HR Interview — Coming Soon
+                    <HrAdmin />
                   </div>
                 }
               />
             </Route>
 
             {/* Old URL redirect → new */}
-            <Route
-              path="/admin/dashboard"
-              element={<Navigate to="/admin" replace />}
-            />
+            <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+
+            <Route path="/interview/start" element={<StartInterview />} />
+            <Route path="/interview/schedule" element={<ScheduleInterview />} />
+
+
           </Routes>
         </BrowserRouter>
       </AdminProvider>

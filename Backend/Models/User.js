@@ -79,12 +79,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  googleRefreshToken: { type: String, default: null },
   role: {
     type: String,
     enum: ['user'],
     default: 'user'
   }
-}, {
+},
+ {
   timestamps: true
 })
 

@@ -1,0 +1,163 @@
+/* HrAdmin.module.css */
+
+.container {
+  min-height: 100vh;
+  background: #0a0a0f;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(124, 58, 237, 0.1) 0%, transparent 60%);
+  padding: 40px 24px 80px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #f1f5f9;
+}
+
+/* ── Page Title ─────────────────────────────────────────────────────────── */
+.container h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 36px;
+  background: linear-gradient(135deg, #a5b4fc, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Form Card ──────────────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 28px 24px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 860px;
+}
+
+.form input,
+.form select {
+  flex: 1;
+  min-width: 200px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  color: #f1f5f9;
+  font-size: 14px;
+  padding: 0 16px;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form input::placeholder {
+  color: rgba(241, 245, 249, 0.3);
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.form select option {
+  background: #1e1b4b;
+  color: #f1f5f9;
+}
+
+.form button {
+  height: 48px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  flex-shrink: 0;
+}
+
+.form button:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
+}
+
+.form button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Question List ──────────────────────────────────────────────────────── */
+.list {
+  max-width: 860px;
+}
+
+.list h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #c7d2fe;
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+}
+
+.list > p {
+  color: rgba(241, 245, 249, 0.4);
+  font-size: 14px;
+}
+
+/* ── Question Card ──────────────────────────────────────────────────────── */
+.card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.card:hover {
+  background: rgba(99, 102, 241, 0.07);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: #e2e8f0;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.card span {
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 4px 12px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a5b4fc;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

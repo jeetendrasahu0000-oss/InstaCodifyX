@@ -18,7 +18,7 @@ const ROUTES = {
   technical: '/interview-preparation/technical',
   machine: '/interview-preparation/machine-test',
   corporate: '/interview-preparation/live-sessions',
-  scheduleMock: '/interview-preparation/schedule-mock',
+  scheduleMock: '/interview-preparation/hr-prep',
 }
 
 const tips = [

@@ -10,6 +10,7 @@ import userRoutes from "./Routers/userRoutes.js";
 import adminRoutes from "./Routers/adminRoutes.js";
 import problemRoutes from "./Routers/problemRoutes.js";
 import setterRequestRoutes from "./Routers/SetterRequestRoute.js";
+import hrRoutes from "./Routers/hrRoutes.js";
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/setter-requests", setterRequestRoutes);
+app.use("/api/hr", hrRoutes);
 
 // Health
 app.get("/api/health", (req, res) =>

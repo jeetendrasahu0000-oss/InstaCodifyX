@@ -13,6 +13,7 @@ import {
 } from '../Controller/authController.js'
 import { protect } from '../Middleware/authMiddleware.js'
 import { authLimiter, otpLimiter } from '../Middleware/rateLimiter.js'
+import { googleLogin } from '../Controller/googleAuthController.js'
 
 const router = express.Router()
 
@@ -33,5 +34,6 @@ router.post('/refresh-token', refreshAccessToken)
 // Protected
 router.get('/me',      protect, getMe)
 router.post('/logout', protect, logout)
+router.post('/google-login', googleLogin)
 
 export default router
