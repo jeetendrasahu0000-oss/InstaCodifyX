@@ -5,6 +5,8 @@ import { useAdmin } from "../../Components/Admin/AdminContext";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import styles from "./AdminDashboard.module.css";
+import { IoIosAddCircle } from "react-icons/io";
+import { MdOutlinePayment } from "react-icons/md";
 
 import {
   MdDashboard,
@@ -94,6 +96,24 @@ const ALL_NAV_ITEMS = [
     label: "HR Interview",
     accent: "#0891b2",
     desc: "Manage HR interview questions and candidate sessions",
+  },
+  {
+    key: "Create Plane",
+    route: "/admin/create-plane",
+    roles: ["admin", "setter"],
+    icon: IoIosAddCircle,
+    label: "Create Plane",
+    accent: "#0891b2",
+    desc: "Manage  upgrade planes for user",
+  },
+  {
+    key: "Payment History",
+    route: "/admin/payment-history",
+    roles: ["admin", "setter"],
+    icon: MdOutlinePayment,
+    label: "Payment History",
+    accent: "#00a12b",
+    desc: "Manage  payment history & sucessfull payments",
   },
 ];
 
@@ -324,11 +344,6 @@ export default function AdminDashboard() {
             Codify<span className={styles.logoAccent}>X</span>
             <span className={styles.logoPath}> /admin</span>
           </span>
-        </div>
-
-        <div className={styles.navVersion}>
-          <MdTerminal size={14} />
-          <span>v2.1.0</span>
         </div>
 
         <div className={styles.navRight}>

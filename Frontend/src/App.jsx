@@ -34,6 +34,9 @@ import HrPreparation from "./Pages/Interview/HRinterview/HrPreparation";
 import StartInterview from "./Pages/Interview/HRinterview/StartInterview";
 import ScheduleInterview from "./Pages/Interview/HRinterview/ScheduleInterview";
 import HrAdmin from "./Components/HrAdmin/HrAdmin";
+import Upgrade from "./Pages/Profile/Upgrade";
+import CreatePlan from "./Components/Admin/CreatePlan";
+import PaymentHistory from "./Components/Admin/PaymentHistory";
 
 
 // ── Guards ────────────────────────────────────────────────────────────────────
@@ -68,6 +71,7 @@ const App = () => {
               <Route path="/discuss" element={<Discuss />} />
               <Route path="/interview-preparation" element={<Interview />} />
               <Route path="/store" element={<Store />} />
+              <Route path="/upgrade" element={<Upgrade />} />
             </Route>
 
             {/* ── Public Routes ── */}
@@ -78,6 +82,7 @@ const App = () => {
             <Route path="/reset/:token" element={<Reset />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/problems/:slug" element={<ProblemDetail />} />
+
 
             {/* Interview sub-routes */}
             <Route
@@ -203,7 +208,11 @@ const App = () => {
                   </div>
                 }
               />
+
+              <Route path="create-plane" element={<CreatePlan />} />
+              <Route path="payment-history" element={<PaymentHistory />} />
             </Route>
+
 
             {/* Old URL redirect → new */}
             <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />

@@ -266,6 +266,19 @@ export default function Header() {
         </svg>
         Bookmarks
       </Link>
+      <Link to="/upgrade" className={style.dropItem} onClick={closeAll}>
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M3 7l4 4 5-6 5 6 4-4v10H3V7z" />
+        </svg>
+        Upgrade
+      </Link>
 
       <Link to="/settings" className={style.dropItem} onClick={closeAll}>
         <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -296,7 +309,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className={style.logo}>
             <img src={LOGO} alt="CodifyX" className={style.logoImg} />
-            
+
           </Link>
 
           {/* Desktop nav */}

@@ -11,7 +11,9 @@ import adminRoutes from "./Routers/adminRoutes.js";
 import problemRoutes from "./Routers/problemRoutes.js";
 import setterRequestRoutes from "./Routers/SetterRequestRoute.js";
 import hrRoutes from "./Routers/hrRoutes.js";
-
+import planRoutes from "./Routers/planRoutes.js";
+import paymentRoutes from "./Routers/paymentRoutes.js"; // ✅ ADDED
+import "./cron/subscriptionExpiry.js";
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/setter-requests", setterRequestRoutes);
 app.use("/api/hr", hrRoutes);
+app.use("/api/plans", planRoutes);
+app.use("/api/payment", paymentRoutes); // ✅ ADDED
 
 // Health
 app.get("/api/health", (req, res) =>
@@ -54,7 +58,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// DB
+// DB + Server Start
 const PORT = process.env.PORT || 5000;
 
 mongoose
