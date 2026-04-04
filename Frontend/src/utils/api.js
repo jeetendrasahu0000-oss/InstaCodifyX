@@ -1,32 +1,41 @@
-  import axios from 'axios'
+import axios from "axios";
 
-  const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-    timeout: 15000,
-    headers: { 'Content-Type': 'application/json' }
-  })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  timeout: 15000,
+  headers: { "Content-Type": "application/json" },
+});
 
-  api.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('token')
-      if (token) config.headers.Authorization = `Bearer ${token}`
-      return config
-    },
-    (error) => Promise.reject(error)
-  )
+// ✅ Request interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  api.interceptors.response.use(
-    (res) => res,
-    (err) => {
-      if (err.response?.status === 401) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        if (!window.location.pathname.startsWith('/login')) {
-          window.location.href = '/login'
-        }
-      }
-      return Promise.reject(err)
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  )
 
-  export default api
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// ✅ Response interceptor (FIXED)
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      // ✅ User ko sirf /login pe bhejo, /admin/login pe nahi
+      if (!window.location.pathname.startsWith("/login")) {
+        window.location.href = "/login";
+      }
+    }
+
+    return Promise.reject(err);
+  }
+);
+
+export default api;

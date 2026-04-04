@@ -1,6 +1,6 @@
 // src/components/HR/StartInterview/StartInterview.jsx
 import React, { useEffect, useState } from 'react'
-import api from '../../../utils/api'
+import userApi from '../../../utils/api'  // ✅ user wala axios (user token attach karta hai)
 import Header from '../../Header/Header'
 import Footer from '../../Footer/Footer'
 import styles from './StartInterview.module.css'
@@ -33,8 +33,8 @@ const StartInterview = () => {
     setAnswers({})
     setSubmitted(false)
     try {
-      const res = await api.get(`/hr/questions?experience=${experience}`)
-      setQuestions(res.data || [])
+      const res = await userApi.get(`/hr/questions?experience=${experience}`)  // ✅ userApi
+      setQuestions(res.data.questions || [])
     } catch (err) {
       console.error('Fetch Error:', err)
       setQuestions([])
@@ -60,7 +60,7 @@ const StartInterview = () => {
         questionId: id,
         answer: answers[id],
       }))
-      await api.post('/hr/submit', { answers: formatted })
+      await userApi.post('/hr/submit', { answers: formatted })  // ✅ userApi
       setSubmitted(true)
     } catch (err) {
       console.error('Submit Error:', err)

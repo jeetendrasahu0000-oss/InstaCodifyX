@@ -1,0 +1,647 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:wght@700&display=swap");
+
+/* ─── Variables ─────────────────────────────────────── */
+.root {
+  --bg: #f0f2f8;
+  --surface: #ffffff;
+  --surface-2: #f7f8fc;
+  --border: #e4e8f4;
+  --border-hover: #c8d0ea;
+  --accent: #3b5bdb;
+  --accent-light: #eef1fd;
+  --accent-mid: #bac8ff;
+  --danger: #e03131;
+  --danger-light: #fff5f5;
+  --danger-mid: #ffc9c9;
+  --success: #099268;
+  --success-light: #e6fcf5;
+  --text-1: #141928;
+  --text-2: #5a607e;
+  --text-3: #9ea3be;
+  --shadow-sm: 0 1px 3px rgba(20, 25, 70, 0.07);
+  --shadow-md:
+    0 4px 20px rgba(20, 25, 70, 0.09), 0 1px 4px rgba(20, 25, 70, 0.05);
+  --shadow-lg:
+    0 24px 64px rgba(20, 25, 70, 0.14), 0 4px 16px rgba(20, 25, 70, 0.07);
+  --radius: 16px;
+  --font: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Fraunces", serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Wrapper ───────────────────────────────────────── */
+.wrapper {
+  min-height: 100vh;
+  background: var(--bg);
+  background-image: radial-gradient(
+    ellipse 90% 40% at 60% -10%,
+    rgba(59, 91, 219, 0.08) 0%,
+    transparent 55%
+  );
+  font-family: var(--font);
+  color: var(--text-1);
+  padding: 44px 52px;
+}
+
+/* ─── Header ────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.headerLeft h2 {
+  font-family: var(--font-display);
+  font-size: 29px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.headerLeft p {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0;
+}
+
+.countBadge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1.5px solid var(--accent-mid);
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ─── Card ──────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* ─── Table ─────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  background: var(--surface-2);
+  border-bottom: 1.5px solid var(--border);
+}
+
+.table thead th {
+  padding: 13px 22px;
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.table thead th:last-child {
+  text-align: right;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.14s var(--ease);
+  animation: rowIn 0.3s var(--ease) both;
+}
+
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table tbody tr:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.table tbody tr:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.table tbody tr:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.table tbody tr:nth-child(4) {
+  animation-delay: 0.16s;
+}
+.table tbody tr:nth-child(n + 5) {
+  animation-delay: 0.2s;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+.table tbody tr:hover {
+  background: #fafbff;
+}
+
+.table td {
+  padding: 15px 22px;
+  font-size: 14px;
+  color: var(--text-1);
+  vertical-align: middle;
+}
+
+/* ─── Avatar Cell ───────────────────────────────────── */
+.avatarCell {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b5bdb 0%, #748ffc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(59, 91, 219, 0.28);
+}
+
+.usernameWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-1);
+}
+
+.uid {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* ─── Email ─────────────────────────────────────────── */
+.emailCell {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-2);
+  font-size: 13.5px;
+}
+
+/* ─── Date Chip ─────────────────────────────────────── */
+.dateChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ─── Actions ───────────────────────────────────────── */
+.actionsCell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnView {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-light);
+  border: 1.5px solid var(--accent-mid);
+  color: var(--accent);
+  padding: 7px 15px;
+  border-radius: 9px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+  white-space: nowrap;
+}
+
+.btnView:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59, 91, 219, 0.28);
+  transform: translateY(-1px);
+}
+
+.btnDelete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--danger-light);
+  border: 1.5px solid var(--danger-mid);
+  color: var(--danger);
+  padding: 7px 15px;
+  border-radius: 9px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+  white-space: nowrap;
+}
+
+.btnDelete:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(224, 49, 49, 0.26);
+  transform: translateY(-1px);
+}
+
+/* ─── States ────────────────────────────────────────── */
+.stateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 20px;
+  gap: 12px;
+  color: var(--text-3);
+}
+
+.stateBox p {
+  font-size: 14.5px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.spinnerRing {
+  width: 36px;
+  height: 36px;
+  border: 3.5px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Overlay ───────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 50, 0.42);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.18s var(--ease);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ─── Modal ─────────────────────────────────────────── */
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  width: 440px;
+  max-width: 94vw;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: popIn 0.25s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ─── Modal Header ──────────────────────────────────── */
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modalHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modalHeaderLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.modalHeaderLeft h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0;
+}
+
+.btnClose {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.btnClose:hover {
+  background: var(--border);
+  color: var(--text-1);
+}
+
+/* ─── Modal Profile Banner ──────────────────────────── */
+.modalProfile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px 20px;
+  background: linear-gradient(135deg, var(--accent-light) 0%, #fff 70%);
+  border-bottom: 1px solid var(--border);
+}
+
+.modalAvatarLg {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b5bdb 0%, #748ffc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 18px rgba(59, 91, 219, 0.32);
+}
+
+.modalProfileInfo h4 {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 4px;
+}
+
+.modalProfileInfo p {
+  font-size: 13px;
+  color: var(--text-2);
+  margin: 0;
+}
+
+/* ─── Modal Fields ──────────────────────────────────── */
+.modalBody {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modalField {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s;
+}
+
+.modalField:hover {
+  border-color: var(--border-hover);
+}
+
+.fieldIcon {
+  width: 34px;
+  height: 34px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.fieldContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fieldLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.fieldValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.rolePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--success-light);
+  border: 1px solid rgba(9, 146, 104, 0.22);
+  color: var(--success);
+  border-radius: 50px;
+  padding: 3px 10px 3px 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ─── Modal Footer ──────────────────────────────────── */
+.modalFooter {
+  padding: 4px 20px 20px;
+}
+
+.btnFullClose {
+  width: 100%;
+  padding: 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 11px;
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.btnFullClose:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-color: var(--border-hover);
+}
+
+/* ─── Confirm Dialog ────────────────────────────────── */
+.confirmBox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: 370px;
+  max-width: 93vw;
+  padding: 32px 28px 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: popIn 0.25s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+.dangerIconWrap {
+  width: 56px;
+  height: 56px;
+  background: var(--danger-light);
+  border: 2px solid var(--danger-mid);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  color: var(--danger);
+}
+
+.confirmBox h4 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 8px;
+}
+
+.confirmBox p {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0 0 26px;
+  line-height: 1.55;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+}
+
+.btnCancel {
+  flex: 1;
+  padding: 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 11px;
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.btnCancel:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
+}
+
+.btnConfirmDelete {
+  flex: 1;
+  padding: 12px;
+  background: var(--danger);
+  border: 1.5px solid var(--danger);
+  border-radius: 11px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s var(--ease);
+}
+
+.btnConfirmDelete:hover {
+  background: #c92a2a;
+  box-shadow: 0 6px 20px rgba(224, 49, 49, 0.28);
+  transform: translateY(-1px);
+}

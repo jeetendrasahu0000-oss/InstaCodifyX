@@ -37,6 +37,8 @@ import HrAdmin from "./Components/HrAdmin/HrAdmin";
 import Upgrade from "./Pages/Profile/Upgrade";
 import CreatePlan from "./Components/Admin/CreatePlan";
 import PaymentHistory from "./Components/Admin/PaymentHistory";
+import ManageSetter from "./Components/Admin/ManageSetter";
+import CreateMachineTest from "./Components/Admin/Createmachinetest";
 
 
 // ── Guards ────────────────────────────────────────────────────────────────────
@@ -114,21 +116,6 @@ const App = () => {
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/setter/register" element={<SetterRegister />} />
 
-            {/*
-             * ── ADMIN LAYOUT (NESTED ROUTES) ─────────────────────────────
-             *
-             * AdminDashboard = parent layout (Navbar + Sidebar + <Outlet />)
-             * Sab admin pages iske children hain — isliye header+sidebar
-             * har page par HAMESHA visible rahega, page refresh nahi hoga.
-             *
-             *   /admin               → Dashboard home (stats + cards)
-             *   /admin/problems      → ProblemList   (sidebar ke saath)
-             *   /admin/problems/new  → ProblemForm   (sidebar ke saath)
-             *   /admin/problems/edit/:id → ProblemForm
-             *   /admin/setter-requests   → SetterRequests
-             *   /admin/register          → RegisterAdmin
-             * ─────────────────────────────────────────────────────────────
-             */}
             <Route
               path="/admin"
               element={
@@ -150,15 +137,7 @@ const App = () => {
                 path="users"
                 element={
                   <AdminOnlyRoute>
-                    <div
-                      style={{
-                        padding: "2rem",
-                        color: "#64748b",
-                        fontFamily: "Inter,sans-serif",
-                      }}
-                    >
-                      Manage Setters — Coming Soon
-                    </div>
+                   <ManageSetter/>
                   </AdminOnlyRoute>
                 }
               />
@@ -179,20 +158,9 @@ const App = () => {
                 }
               />
 
-              {/* Shared — admin + setter */}
               <Route
                 path="machine"
-                element={
-                  <div
-                    style={{
-                      padding: "2rem",
-                      color: "#64748b",
-                      fontFamily: "Inter,sans-serif",
-                    }}
-                  >
-                    Machine Text — Coming Soon
-                  </div>
-                }
+                element={<CreateMachineTest/>}
               />
               <Route
                 path="hr-interview"

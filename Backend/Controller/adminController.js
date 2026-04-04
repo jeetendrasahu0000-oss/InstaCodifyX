@@ -46,3 +46,32 @@ export const loginAdmin = async (req, res) => {
 export const getProfile = async (req, res) => {
   res.json(req.admin);
 };
+
+// Get all problem setters
+export const getAllSetters = async (req, res) => {
+  try {
+    const setters = await Admin.find({ role: "problem-setter" }).select("-password");
+    res.json(setters);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete setter
+export const deleteSetter = async (req, res) => {
+  try {
+    const setter = await Admin.findById(req.params.id);
+
+    if (!setter) return res.status(404).json({ message: "Setter not found" });
+
+    if (setter.role !== "problem-setter") {
+      return res.status(400).json({ message: "Only setters can be deleted" });
+    }
+
+    await setter.deleteOne();
+    res.json({ message: "Setter deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+

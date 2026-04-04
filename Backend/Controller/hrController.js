@@ -1,64 +1,77 @@
-// Controller/hrController.js
-import HrQuestion from '../Models/HrQuestion.js'
-import InterviewSchedule from '../Models/InterviewSchedule.js'
-import InterviewAnswer from '../Models/InterviewAnswer.js'
-import User from '../Models/User.js'
-import { sendInterviewMail } from '../Utils/sendEmailInterviewSchedule.js'
-import { createGoogleMeet } from '../Utils/googleMeet.js'
+// Backend/Controller/hrController.js
+import HrQuestion from "../Models/HrQuestion.js";
+import InterviewSchedule from "../Models/InterviewSchedule.js";
+import { sendInterviewMail } from "../Utils/sendEmailInterviewSchedule.js";
+import { createGoogleMeet } from "../Utils/googleMeet.js";
 
-// ── HR: Add Question ─────────────────────────────────────────────────────────
+// ───────────────────────────────
+// Add HR Question (ADMIN ONLY)
+// ───────────────────────────────
 export const addQuestion = async (req, res) => {
   try {
-    const question = await HrQuestion.create({ ...req.body, createdBy: req.user._id })
-    res.json({ success: true, question })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
+    const { question, experienceLevel } = req.body;
 
-// ── Get Questions ────────────────────────────────────────────────────────────
+    if (!question || !experienceLevel) {
+      return res.status(400).json({
+        success: false,
+        message: "Question and experience level are required",
+      });
+    }
+
+    const newQuestion = await HrQuestion.create({
+      question,
+      experienceLevel,
+      createdBy: req.admin._id, // ✅ strictly admin
+    });
+
+    res.status(201).json({
+      success: true,
+      question: newQuestion,
+    });
+  } catch (err) {
+    console.error("Add Question Error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ───────────────────────────────
+// Get HR Questions (ADMIN ONLY)
+// ───────────────────────────────
 export const getQuestions = async (req, res) => {
   try {
-    const { experience } = req.query
-    const questions = await HrQuestion.find({ experienceLevel: experience })
-    res.json(questions)
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching questions' })
-  }
-}
+    const { experience } = req.query;
 
-// ── Submit Answers ───────────────────────────────────────────────────────────
-export const submitAnswers = async (req, res) => {
-  try {
-    const { answers } = req.body
-    const result = await InterviewAnswer.create({ userId: req.user._id, answers })
-    res.json({ success: true, result })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-}
+    const filter = experience ? { experienceLevel: experience } : {};
 
-// ── Schedule Interview ───────────────────────────────────────────────────────
+    const questions = await HrQuestion.find(filter).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: questions.length,
+      questions,
+    });
+  } catch (err) {
+    console.error("Get Questions Error:", err);
+    res.status(500).json({ message: "Error fetching questions" });
+  }
+};
+
+// ───────────────────────────────
+// Schedule Interview (ADMIN ONLY)
+// ───────────────────────────────
 export const scheduleInterview = async (req, res) => {
   try {
     const { name, date, time, accessToken, email } = req.body;
 
-    // ✅ validation
     if (!name || !date || !time || !email) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     if (!accessToken) {
-      return res.status(400).json({
-        success: false,
-        message: "Google not connected. Please login again.",
-      });
+      return res.status(400).json({ message: "Google not connected" });
     }
 
-    // ✅ 1. Create Meet link
+    // Create Google Meet
     const meetLink = await createGoogleMeet({
       summary: `Interview with ${name}`,
       date,
@@ -66,54 +79,93 @@ export const scheduleInterview = async (req, res) => {
       accessToken,
     });
 
-    // ✅ 2. Save in DB (optional but recommended)
+    // Save interview schedule
     const schedule = await InterviewSchedule.create({
-      userId: req.user._id,
       candidateName: name,
       email,
       date,
       time,
       meetingLink: meetLink,
+      createdBy: req.admin._id, // ✅ strictly admin
+      status: "scheduled",
     });
 
-    // ✅ 3. Send Email
+    // Send email to candidate
     await sendInterviewMail({
       to: email,
       candidateName: name,
       date,
       time,
-      meetingLink: meetLink, // ✅ direct pass (no regen)
-    });
-
-    // ✅ 4. Response
-    res.status(200).json({
-      success: true,
       meetingLink: meetLink,
     });
 
-  } catch (error) {
-    console.error("Schedule Error:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message || "Failed to schedule interview",
+    res.status(200).json({
+      success: true,
+      schedule,
     });
+  } catch (err) {
+    console.error("Schedule Interview Error:", err);
+    res
+      .status(500)
+      .json({ message: err.message || "Failed to schedule interview" });
   }
 };
 
-// ── Update Status ────────────────────────────────────────────────────────────
+// ───────────────────────────────
+// Update Interview Status (ADMIN ONLY)
+// ───────────────────────────────
 export const updateStatus = async (req, res) => {
   try {
-    const { status, meetingLink } = req.body
+    const { status, meetingLink } = req.body;
+
     const updated = await InterviewSchedule.findByIdAndUpdate(
       req.params.id,
       { status, meetingLink },
-      { new: true }
-    )
-    if (!updated) return res.status(404).json({ message: 'Interview not found' })
-    res.json(updated)
+      { new: true },
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Interview not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      updated,
+    });
   } catch (err) {
-    console.error('updateStatus error:', err)
-    res.status(500).json({ message: err.message })
+    console.error("Update Status Error:", err);
+    res.status(500).json({ message: err.message });
   }
-}
+};
+
+// ───────────────────────────────
+// Submit User Answers (USER ONLY)
+// ───────────────────────────────
+import InterviewAnswer from "../Models/InterviewAnswer.js"; // ensure ye model hai
+
+export const submitAnswers = async (req, res) => {
+  try {
+    const { questionId, answer } = req.body;
+
+    if (!questionId || !answer) {
+      return res
+        .status(400)
+        .json({ message: "Question ID and answer required" });
+    }
+
+    const newAnswer = await InterviewAnswer.create({
+      question: questionId,
+      answer,
+      user: req.user._id, // ✅ user id from auth middleware
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Answer submitted successfully",
+      answer: newAnswer,
+    });
+  } catch (err) {
+    console.error("Submit Answers Error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};

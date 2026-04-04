@@ -1,14 +1,14 @@
 // src/pages/HR/HrAdmin.jsx
 import React, { useEffect, useState } from 'react'
-import api from '../../utils/api'
+import API from '../Admin/adminApi.js'  // ← admin wala axios (adminInfo token use karta hai)
 import styles from './HrAdmin.module.css'
 
 const EXPERIENCE_OPTIONS = [
   { value: 'fresher', label: 'Fresher' },
-  { value: '0-6',     label: '0–6 Months' },
-  { value: '6-12',    label: '6–12 Months' },
-  { value: '1-2',     label: '1–2 Years' },
-  { value: '2+',      label: '2+ Years' },
+  { value: '0-6', label: '0–6 Months' },
+  { value: '6-12', label: '6–12 Months' },
+  { value: '1-2', label: '1–2 Years' },
+  { value: '2+', label: '2+ Years' },
 ]
 
 const HrAdmin = () => {
@@ -20,8 +20,8 @@ const HrAdmin = () => {
   const fetchQuestions = async () => {
     try {
       setFetchLoading(true)
-      const res = await api.get(`/hr/questions?experience=${form.experienceLevel}`)
-      setQuestions(res.data)
+      const res = await API.get(`/hr/questions?experience=${form.experienceLevel}`)
+      setQuestions(res.data.questions)  // ← backend { success, questions } return karta hai
     } catch (err) {
       console.error(err)
     } finally {
@@ -38,7 +38,7 @@ const HrAdmin = () => {
     if (!form.question.trim()) return
     try {
       setLoading(true)
-      await api.post('/hr/add-question', form)
+      await API.post('/hr/add-question', form)  // ← API (admin wala)
       setForm({ question: '', experienceLevel: form.experienceLevel })
       fetchQuestions()
     } catch (err) {

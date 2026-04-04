@@ -1,113 +1,119 @@
-import React, { useState } from "react";
-import Editor from "@monaco-editor/react";
-import api from "../../../utils/api.js";
-import styles from "./MachineTest.module.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../../utils/api";
+import styles from "../MachineTest/MachineTest.module.css";
+import {
+  FiClock, FiAward, FiCode, FiCalendar,
+  FiArrowRight, FiAlertCircle
+} from "react-icons/fi";
+import { HiSparkles } from "react-icons/hi2";
 
 const MachineTest = () => {
+  const [tests, setTests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [mySubmissions, setMySubmissions] = useState([]);
+  const navigate = useNavigate();
 
-  const [code, setCode] = useState("// Write your code here");
-  const [output, setOutput] = useState("");
-  const [input, setInput] = useState("");
-  const [language, setLanguage] = useState(63);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [testsRes, subsRes] = await Promise.all([
+          api.get("/machine-tests/available"),
+          api.get("/submissions/my"),
+        ]);
+        setTests(testsRes.data);
+        setMySubmissions(subsRes.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  const runCode = async () => {
-    try {
-      setLoading(true);
-      setOutput("Running... 🚀");
+  const hasSubmitted = (testId) =>
+    mySubmissions.some((s) => s.test?._id === testId || s.test === testId);
 
-      const res = await api.post("/code/run", {
-        code,
-        language_id: language,
-        input
-      });
+  const formatDate = (d) =>
+    new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
-      setOutput(
-        res.data.stdout ||
-        res.data.stderr ||
-        res.data.compile_output ||
-        "No Output"
-      );
-
-    } catch (err) {
-      console.error(err);
-      setOutput(
-        err.response?.data?.message || "❌ Error running code"
-      );
-    } finally {
-      setLoading(false);
-    }
+  const getStatus = (test) => {
+    const now = new Date();
+    if (now < new Date(test.startTime)) return { label: "Upcoming", cls: styles.upcoming };
+    if (now > new Date(test.endTime)) return { label: "Ended", cls: styles.ended };
+    return { label: "Live", cls: styles.live };
   };
 
+  if (loading) return (
+    <div className={styles.loadPage}>
+      <div className={styles.spinner} />
+      <span>Loading tests...</span>
+    </div>
+  );
+
   return (
-    <div className={styles.container}>
-
-      {/* LEFT PANEL */}
-      <div className={styles.leftPanel}>
-        <h2 className={styles.title}>Reverse String</h2>
-        <p className={styles.desc}>
-          Write a function to reverse a string.
-        </p>
-
-        <div className={styles.example}>
-          <h4>Example:</h4>
-          <pre>
-            Input: hello
-            Output: olleh
-          </pre>
-        </div>
+    <div className={styles.page}>
+      <div className={styles.hero}>
+        <div className={styles.heroBadge}><HiSparkles size={12} /> Machine Tests</div>
+        <h1 className={styles.heroTitle}>Available Tests</h1>
+        <p className={styles.heroSub}>Complete the tasks within the time limit and submit your work.</p>
       </div>
 
-      {/* RIGHT PANEL */}
-      <div className={styles.rightPanel}>
-
-        {/* Top Bar */}
-        <div className={styles.topBar}>
-          <select
-            className={styles.select}
-            value={language}
-            onChange={(e) => setLanguage(Number(e.target.value))}
-          >
-            <option value={63}>JavaScript</option>
-            <option value={54}>C++</option>
-            <option value={71}>Python</option>
-          </select>
+      {tests.length === 0 ? (
+        <div className={styles.empty}>
+          <FiAlertCircle size={32} style={{ color: "#4a5070" }} />
+          <p>No active tests right now. Check back later.</p>
         </div>
+      ) : (
+        <div className={styles.grid}>
+          {tests.map((test) => {
+            const status = getStatus(test);
+            const submitted = hasSubmitted(test._id);
+            return (
+              <div key={test._id} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <div className={styles.statusRow}>
+                    <span className={`${styles.statusBadge} ${status.cls}`}>{status.label}</span>
+                    {submitted && <span className={styles.submittedBadge}><FiAward size={10} /> Submitted</span>}
+                  </div>
+                  <h2 className={styles.cardTitle}>{test.title}</h2>
+                  <p className={styles.cardDesc}>{test.description?.slice(0, 120)}{test.description?.length > 120 ? "…" : ""}</p>
+                </div>
 
-        {/* Code Editor */}
-        <Editor
-          height="300px"
-          defaultLanguage="javascript"
-          theme="vs-dark"
-          value={code}
-          onChange={(value) => setCode(value || "")}
-        />
+                <div className={styles.cardMeta}>
+                  <div className={styles.metaItem}>
+                    <FiClock size={13} /> {test.duration} min
+                  </div>
+                  <div className={styles.metaItem}>
+                    <FiAward size={13} /> {test.totalMarks} marks
+                  </div>
+                  {test.codingProblems?.length > 0 && (
+                    <div className={styles.metaItem}>
+                      <FiCode size={13} /> {test.codingProblems.length} coding
+                    </div>
+                  )}
+                </div>
 
-        {/* Input Box */}
-        <textarea
-          className={styles.inputBox}
-          placeholder="Custom Input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+                <div className={styles.dateRow}>
+                  <div className={styles.dateItem}>
+                    <FiCalendar size={11} />
+                    <span>Ends {formatDate(test.endTime)}</span>
+                  </div>
+                </div>
 
-        {/* Run Button */}
-        <button
-          className={styles.runBtn}
-          onClick={runCode}
-          disabled={loading}
-        >
-          {loading ? "Running..." : "Run Code"}
-        </button>
-
-        {/* Output */}
-        <div className={styles.outputBox}>
-          <h4>Output:</h4>
-          <pre>{output}</pre>
+                <button
+                  className={`${styles.btn} ${submitted ? styles.btnDone : ""}`}
+                  onClick={() => navigate(`/machine-test/${test._id}`)}
+                  disabled={submitted}
+                >
+                  {submitted ? "Already Submitted" : <><span>Start Test</span> <FiArrowRight size={14} /></>}
+                </button>
+              </div>
+            );
+          })}
         </div>
-
-      </div>
-
+      )}
     </div>
   );
 };
