@@ -31,6 +31,24 @@ const getAvatarColors = (name = '') => {
   return AVATAR_COLORS[idx]
 }
 
+// ── React Icon SVG ─────────────────────────────────────────────────────────────
+function ReactIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Outer ellipse - horizontal */}
+      <ellipse cx="12" cy="12" rx="10.5" ry="4.2" stroke="#61DAFB" strokeWidth="1.2" fill="none" />
+      {/* Outer ellipse - rotated 60deg */}
+      <ellipse cx="12" cy="12" rx="10.5" ry="4.2" stroke="#61DAFB" strokeWidth="1.2" fill="none"
+        transform="rotate(60 12 12)" />
+      {/* Outer ellipse - rotated 120deg */}
+      <ellipse cx="12" cy="12" rx="10.5" ry="4.2" stroke="#61DAFB" strokeWidth="1.2" fill="none"
+        transform="rotate(120 12 12)" />
+      {/* Center dot */}
+      <circle cx="12" cy="12" r="1.6" fill="#61DAFB" />
+    </svg>
+  )
+}
+
 // ── Avatar ─────────────────────────────────────────────────────────────────────
 function Avatar({ user, size = 28, fontSize = 11, borderRadius = 7 }) {
   const colors = getAvatarColors(user?.fullname || user?.username || '')
@@ -106,7 +124,6 @@ export default function Header() {
 
   const isActive = (to) => location.pathname.startsWith(to)
 
-  // Close desktop dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropRef.current && !dropRef.current.contains(e.target)) setDropOpen(false)
@@ -116,12 +133,10 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // Auto-focus mobile search input
   useEffect(() => {
     if (mobileSearch) setTimeout(() => searchInputRef.current?.focus(), 80)
   }, [mobileSearch])
 
-  // Close all on route change
   useEffect(() => {
     setDropOpen(false)
     setMenuOpen(false)
@@ -129,7 +144,6 @@ export default function Header() {
     setMobileProfileOpen(false)
   }, [location.pathname])
 
-  // Fetch profile from backend
   const fetchProfile = useCallback(async () => {
     if (fetchedRef.current || !isLoggedIn) return
     fetchedRef.current = true
@@ -266,15 +280,9 @@ export default function Header() {
         </svg>
         Bookmarks
       </Link>
+
       <Link to="/upgrade" className={style.dropItem} onClick={closeAll}>
-        <svg
-          width="16"
-          height="16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
+        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path d="M3 7l4 4 5-6 5 6 4-4v10H3V7z" />
         </svg>
         Upgrade
@@ -309,8 +317,8 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className={style.logo}>
             <img src={LOGO} alt="CodifyX" className={style.logoImg} />
-
           </Link>
+
 
           {/* Desktop nav */}
           <nav className={style.nav}>
@@ -340,7 +348,7 @@ export default function Header() {
             <span className={style.searchKbd}>⌘K</span>
           </div>
 
-          {/* Desktop Auth */}
+          {/* ✅ Desktop Auth — Fixed buttons */}
           {isLoggedIn && user ? (
             <div className={style.userArea} ref={dropRef}>
               <button className={style.avatarBtn} onClick={handleDropToggle}>
@@ -371,7 +379,6 @@ export default function Header() {
           {/* ── Mobile Right Actions ── */}
           <div className={style.mobileActions}>
 
-            {/* Mobile Search toggle */}
             <button
               className={`${style.mobileActionBtn} ${mobileSearch ? style.mobileActionActive : ''}`}
               onClick={() => { setMobileSearch(o => !o); setMenuOpen(false); setMobileProfileOpen(false) }}
@@ -388,7 +395,6 @@ export default function Header() {
               )}
             </button>
 
-            {/* Mobile Avatar button (logged in) */}
             {isLoggedIn && user && (
               <div className={style.mobileAvatarArea} ref={mobileDropRef}>
                 <button
@@ -402,7 +408,6 @@ export default function Header() {
                   {merged.isVerified && <span className={style.mobileVerifiedDot} />}
                 </button>
 
-                {/* Mobile Profile Dropdown */}
                 {mobileProfileOpen && (
                   <div className={style.mobileProfileDrop}>
                     <DropdownContent />
@@ -411,7 +416,6 @@ export default function Header() {
               </div>
             )}
 
-            {/* Hamburger */}
             <button
               className={`${style.hamburger} ${menuOpen ? style.hamburgerOpen : ''}`}
               onClick={() => { setMenuOpen(o => !o); setMobileSearch(false); setMobileProfileOpen(false) }}

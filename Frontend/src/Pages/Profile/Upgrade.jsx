@@ -222,7 +222,7 @@ const Upgrade = () => {
               <br />
               Start exploring premium features now!
             </p>
-            <a href="/dashboard" className={styles.successBtn}>
+            <a href="/" className={styles.successBtn}>
               Go to Dashboard <FiArrowRight />
             </a>
           </div>

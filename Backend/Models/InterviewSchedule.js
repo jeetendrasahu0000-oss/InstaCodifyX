@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const scheduleSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    name: String,
+    candidate: String,
     email: String,
     date: String,
     time: String,

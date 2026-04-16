@@ -15,7 +15,6 @@ import planRoutes from "./Routers/planRoutes.js";
 import paymentRoutes from "./Routers/paymentRoutes.js"; // ✅ ADDED
 import "./cron/subscriptionExpiry.js";
 
-
 const app = express();
 
 // Security
@@ -37,10 +36,9 @@ app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/setter-requests", setterRequestRoutes);
-app.use("/api/hr", hrRoutes);
+app.use("/api/hr", hrRoutes); // ← ye line honi chahiye
 app.use("/api/plans", planRoutes);
-app.use("/api/payment", paymentRoutes); 
-
+app.use("/api/payment", paymentRoutes);
 
 // Health
 app.get("/api/health", (req, res) =>

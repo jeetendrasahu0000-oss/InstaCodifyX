@@ -167,7 +167,6 @@ const App = () => {
                 element={
                   <div
                     style={{
-                      padding: "2rem",
                       color: "#64748b",
                       fontFamily: "Inter,sans-serif",
                     }}

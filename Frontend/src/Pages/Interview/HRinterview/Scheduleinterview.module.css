@@ -3,14 +3,14 @@
    Theme: Clean White — matches HrPreparation
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 /* ── Page ── */
 .page {
   min-height: 100vh;
   background: #f8f9fc;
   padding: 60px 24px 48px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,13 +25,19 @@
   border: 1.5px solid #e2e8f0;
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.07);
   animation: fadeUp 0.5s ease both;
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Left Panel ── */
@@ -107,11 +113,14 @@
 }
 
 .stepCircle {
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #f1f5f9;
   border: 1.5px solid #e2e8f0;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 12px;
   font-weight: 700;
   flex-shrink: 0;
@@ -198,20 +207,22 @@
   border: 1.5px solid #e2e8f0;
   background: #fff;
   color: #374151;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.22s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .googleBtn:hover:not(:disabled) {
   border-color: #c7d2fe;
   background: #f8f9ff;
-  box-shadow: 0 4px 16px rgba(99,102,241,0.1);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
   transform: translateY(-1px);
 }
-.googleBtn:disabled { cursor: default; }
+.googleBtn:disabled {
+  cursor: default;
+}
 
 .googleConnected {
   border-color: #86efac !important;
@@ -219,7 +230,9 @@
   color: #16a34a !important;
 }
 
-.gIcon { font-size: 18px; }
+.gIcon {
+  font-size: 18px;
+}
 
 /* Divider */
 .divider {
@@ -232,8 +245,9 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-.divider::before, .divider::after {
-  content: '';
+.divider::before,
+.divider::after {
+  content: "";
   flex: 1;
   height: 1px;
   background: #e2e8f0;
@@ -262,7 +276,10 @@
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
-.label svg { font-size: 13px; color: #6366f1; }
+.label svg {
+  font-size: 13px;
+  color: #6366f1;
+}
 
 .input {
   width: 100%;
@@ -271,18 +288,22 @@
   border-radius: 10px;
   background: #fafafa;
   color: #0f172a;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 14px;
   outline: none;
   transition: all 0.2s;
   box-sizing: border-box;
 }
-.input::placeholder { color: #c0c9d8; }
-.input:hover { border-color: #c7d2fe; }
+.input::placeholder {
+  color: #c0c9d8;
+}
+.input:hover {
+  border-color: #c7d2fe;
+}
 .input:focus {
   border-color: #6366f1;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 /* Error Box */
@@ -300,10 +321,18 @@
   animation: shake 0.3s ease;
 }
 @keyframes shake {
-  0%  { transform: translateX(-5px); }
-  33% { transform: translateX(5px); }
-  66% { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-5px);
+  }
+  33% {
+    transform: translateX(5px);
+  }
+  66% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* Success Box */
@@ -318,8 +347,14 @@
   animation: fadeIn 0.35s ease;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .successTitle {
   display: flex;
@@ -343,8 +378,12 @@
   text-decoration: none;
   transition: all 0.2s;
 }
-.meetLink:hover { background: #dcfce7; }
-.meetLink svg:last-child { margin-left: auto; }
+.meetLink:hover {
+  background: #dcfce7;
+}
+.meetLink svg:last-child {
+  margin-left: auto;
+}
 
 /* Submit Button */
 .submitBtn {
@@ -358,27 +397,36 @@
   border-radius: 12px;
   background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: #fff;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.22s ease;
-  box-shadow: 0 6px 20px rgba(99,102,241,0.35);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
 }
 .submitBtn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(99,102,241,0.45);
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.45);
 }
-.submitBtn:active:not(:disabled) { transform: translateY(0); }
-.submitBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .spinIcon {
   font-size: 16px;
   animation: spin 0.9s linear infinite;
 }
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Secure Note */
@@ -392,14 +440,32 @@
   font-weight: 500;
   margin: 0;
 }
-.secureNote svg { color: #16a34a; }
+.secureNote svg {
+  color: #16a34a;
+}
 
 /* ── Responsive ── */
 @media (max-width: 780px) {
-  .container { flex-direction: column; }
-  .leftPanel { width: 100%; padding: 28px 24px; }
-  .steps { flex-direction: row; overflow-x: auto; }
-  .stepItem { flex-direction: column; text-align: center; min-width: 90px; }
-  .formCard { padding: 28px 22px; }
-  .formGrid { grid-template-columns: 1fr; }
+  .container {
+    flex-direction: column;
+  }
+  .leftPanel {
+    width: 100%;
+    padding: 28px 24px;
+  }
+  .steps {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .stepItem {
+    flex-direction: column;
+    text-align: center;
+    min-width: 90px;
+  }
+  .formCard {
+    padding: 28px 22px;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
 }
