@@ -1,0 +1,1069 @@
+/* =====================================================
+   CodifyX — AboutUs.module.css
+   All styling here — zero inline styles in JSX
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
+
+/* ─── Base ─── */
+.wrapper {
+  font-family: "Sora", "Segoe UI", sans-serif;
+  background: #f8fffe;
+  color: #0f172a;
+  overflow-x: hidden;
+}
+
+/* ─── Animations ─── */
+.fadeUp {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.fadeUp.show {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.float {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+/* ─── Shared layout ─── */
+.sectionInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ─── Section Header ─── */
+.sectionHeader {
+  text-align: center;
+  max-width: 580px;
+  margin: 0 auto;
+}
+.sectionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #059669;
+  letter-spacing: 0.8px;
+}
+.sectionTitle {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 14px;
+}
+.sectionSub {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ─── Shared Buttons ─── */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 26px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+}
+.btnOutline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 13px 26px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btnOutline:hover {
+  background: #f1f5f9;
+}
+
+.btnDark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #e2e8f0;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px 32px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btnDark:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ─── Accent text ─── */
+.heroAccent {
+  color: #10b981;
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #f0fdf8 0%, #ecfdf5 60%, #f0f9ff 100%);
+  padding: 80px 24px 60px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.heroDotPattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#10b98120 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.heroInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.heroGrid {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.heroLeft {
+  flex: 1;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 24px;
+}
+.badgeIcon {
+  color: #059669;
+}
+.badgeText {
+  font-size: 13px;
+  font-weight: 600;
+  color: #059669;
+  letter-spacing: 0.5px;
+}
+
+.heroTitle {
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+.heroDesc {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.8;
+  max-width: 460px;
+  margin-bottom: 32px;
+}
+.heroBtns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ─── Code Window ─── */
+.heroRight {
+  flex: 1;
+  max-width: 480px;
+}
+.codeWindow {
+  font-family: "Courier New", monospace;
+  background: #0d1117;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  border: 1px solid #30363d;
+}
+.codeBar {
+  background: #161b22;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #30363d;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotRed {
+  background: #ff5f57;
+}
+.dotYellow {
+  background: #febc2e;
+}
+.dotGreen {
+  background: #28c840;
+}
+.codeFileName {
+  margin-left: 12px;
+  font-size: 12px;
+  color: #8b949e;
+}
+.liveBadge {
+  margin-left: auto;
+  background: #10b981;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.codeBody {
+  padding: 20px 24px;
+  font-size: 13px;
+  line-height: 2;
+}
+.codeLine {
+  margin: 0;
+}
+.pl1 {
+  padding-left: 20px;
+}
+.pl2 {
+  padding-left: 40px;
+}
+.pl3 {
+  padding-left: 60px;
+}
+.pl4 {
+  padding-left: 80px;
+}
+
+/* Code syntax colours */
+.cKw {
+  color: #ff7b72;
+}
+.cCls {
+  color: #d2a8ff;
+}
+.cFn {
+  color: #79c0ff;
+}
+.cTxt {
+  color: #e6edf3;
+}
+.cMuted {
+  color: #8b949e;
+}
+.cSuccess {
+  color: #3fb950;
+  font-size: 12px;
+}
+
+.codeResult {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #0d1b12;
+  border-radius: 8px;
+  border: 1px solid #1f6435;
+}
+
+/* Floating badge */
+.floatingBadge {
+  position: relative;
+  margin-top: -20px;
+  margin-left: auto;
+  margin-right: 32px;
+  width: fit-content;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.floatingBadgeIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #d1fae5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.floatingBadgeIconColor {
+  color: #10b981;
+}
+.floatingBadgeValue {
+  font-weight: 700;
+  font-size: 15px;
+  color: #0f172a;
+  margin: 0;
+}
+.floatingBadgeLabel {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+.statsSection {
+  padding: 60px 24px;
+  background: #fff;
+}
+.statsInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.statCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.statIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+.statIcon_green {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.statIcon_blue {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+.statIcon_amber {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+.statIcon_purple {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.statLabel {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   MISSION
+══════════════════════════════════════ */
+.missionSection {
+  padding: 80px 24px;
+  background: #f8fffe;
+}
+.missionInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+/* Dark visual card */
+.missionVisual {
+  flex: 1 1 320px;
+  background: linear-gradient(135deg, #0d1117 0%, #0f2c1e 100%);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.missionVisualGlow {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+}
+.missionVisualHeader {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.missionVisualIconWrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.missionTargetIcon {
+  color: #10b981;
+}
+.missionVisualTitle {
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 16px;
+}
+.missionVisualDesc {
+  color: #94a3b8;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.missionCheckRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.missionCheckIcon {
+  color: #10b981;
+}
+.missionCheckText {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.missionMiniStats {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+.missionMiniStat {
+  flex: 1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.06);
+}
+.missionMiniStatValue {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+}
+.missionMiniStatLabel {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+}
+.miniStat_green .missionMiniStatValue {
+  color: #10b981;
+}
+.miniStat_indigo .missionMiniStatValue {
+  color: #6366f1;
+}
+.miniStat_amber .missionMiniStatValue {
+  color: #f59e0b;
+}
+
+/* Text side */
+.missionText {
+  flex: 1 1 320px;
+}
+.missionTextTitle {
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  margin-top: 16px;
+}
+.missionPara {
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.85;
+  margin-bottom: 20px;
+}
+.missionHighlights {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.missionHighlightItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+}
+.missionHighlightIcon {
+  color: #10b981;
+  display: flex;
+}
+
+/* ══════════════════════════════════════
+   FEATURES
+══════════════════════════════════════ */
+.featuresSection {
+  padding: 80px 24px;
+  background: #fff;
+}
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.featureCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 30px 28px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+
+.featureIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.featureIcon_green {
+  background: rgba(16, 185, 129, 0.08);
+  color: #10b981;
+}
+.featureIcon_indigo {
+  background: rgba(99, 102, 241, 0.08);
+  color: #6366f1;
+}
+.featureIcon_amber {
+  background: rgba(245, 158, 11, 0.08);
+  color: #f59e0b;
+}
+.featureIcon_pink {
+  background: rgba(236, 72, 153, 0.08);
+  color: #ec4899;
+}
+
+.featureTitle {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+.featureDesc {
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.75;
+}
+
+/* ══════════════════════════════════════
+   TECH STACK
+══════════════════════════════════════ */
+.techSection {
+  padding: 60px 24px;
+  background: #f8fffe;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+}
+.techLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 2px;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+.techRow {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.techPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 20px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  cursor: default;
+}
+.techPill:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+.techName {
+  font-weight: 600;
+  font-size: 14px;
+  color: #334155;
+}
+.techIcon {
+  display: flex;
+}
+
+/* Tech icon colours */
+.techIcon_js {
+  color: #f7df1e;
+}
+.techIcon_py {
+  color: #3776ab;
+}
+.techIcon_ts {
+  color: #3178c6;
+}
+.techIcon_react {
+  color: #61dafb;
+}
+.techIcon_node {
+  color: #339933;
+}
+.techIcon_lc {
+  color: #ffa116;
+}
+
+/* ══════════════════════════════════════
+   JOURNEY
+══════════════════════════════════════ */
+.journeySection {
+  padding: 80px 24px;
+  background: #fff;
+}
+.journeyInner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.journeyTimeline {
+  margin-top: 56px;
+  position: relative;
+}
+.timelineLine {
+  position: absolute;
+  top: 24px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+.timelineDots {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 40px;
+}
+.journeyDot {
+  text-align: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+.journeyDot:hover {
+  transform: scale(1.1);
+}
+.dotCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  background: #fff;
+  border: 2px solid #cbd5e1;
+  transition: all 0.25s ease;
+}
+.dotCircleActive {
+  background: #10b981;
+  border-color: #10b981;
+}
+.dotStar {
+  color: #94a3b8;
+}
+.dotStarActive {
+  color: #fff;
+}
+.dotYear {
+  font-weight: 700;
+  font-size: 14px;
+  color: #94a3b8;
+  display: block;
+}
+.dotYearActive {
+  color: #10b981;
+}
+
+.journeyContent {
+  background: #f8fffe;
+  border: 1px solid #d1fae5;
+  border-radius: 18px;
+  padding: 32px 36px;
+  text-align: center;
+}
+.journeyTitle {
+  font-weight: 800;
+  font-size: 22px;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+.journeyDesc {
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════ */
+.howSection {
+  padding: 80px 24px;
+  background: #f8fffe;
+}
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.stepCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 28px 24px;
+  position: relative;
+}
+.stepNum {
+  font-size: 36px;
+  font-weight: 800;
+  color: #e2e8f0;
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: monospace;
+}
+.stepIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(16, 185, 129, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+  margin-bottom: 16px;
+}
+.stepTitle {
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+.stepDesc {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   TEAM
+══════════════════════════════════════ */
+.teamSection {
+  padding: 80px 24px;
+  background: #f8fffe;
+}
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.teamCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 28px 20px;
+  text-align: center;
+  transition: box-shadow 0.25s ease;
+}
+.teamCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 18px;
+  font-weight: 800;
+  transition: transform 0.25s ease;
+}
+.teamCard:hover .avatar {
+  transform: scale(1.08);
+}
+
+/* Avatar colour variants */
+.avatar_green {
+  background: rgba(16, 185, 129, 0.13);
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+.avatar_indigo {
+  background: rgba(99, 102, 241, 0.13);
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  color: #6366f1;
+}
+.avatar_amber {
+  background: rgba(245, 158, 11, 0.13);
+  border: 2px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+.avatar_pink {
+  background: rgba(236, 72, 153, 0.13);
+  border: 2px solid rgba(236, 72, 153, 0.3);
+  color: #ec4899;
+}
+
+.teamName {
+  font-weight: 700;
+  font-size: 16px;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+.teamRole {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   CTA
+══════════════════════════════════════ */
+.ctaSection {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, #0d1117 0%, #0f2c1e 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ctaGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.ctaInner {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.ctaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 24px;
+}
+.ctaBadgeIcon {
+  color: #10b981;
+}
+.ctaBadgeText {
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+}
+.ctaTitle {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.ctaDesc {
+  color: #94a3b8;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+.ctaBtns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroGrid {
+    flex-direction: column;
+  }
+  .heroRight {
+    max-width: 100%;
+    width: 100%;
+  }
+  .heroDesc {
+    max-width: 100%;
+  }
+  .hero {
+    padding: 60px 16px 40px;
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+  .missionInner {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .teamGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .journeyContent {
+    padding: 24px 20px;
+  }
+  .ctaTitle {
+    font-size: 28px;
+  }
+  .missionVisual{
+    flex: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+  .heroBtns {
+    flex-direction: column;
+  }
+  .btnPrimary,
+  .btnOutline {
+    width: 100%;
+    justify-content: center;
+  }
+  .ctaBtns {
+    flex-direction: column;
+  }
+  .timelineDots {
+    gap: 0;
+  }
+  .missionMiniStats {
+    flex-direction: column;
+  }
+  .missionVisual{
+    flex: none;
+  }
+}

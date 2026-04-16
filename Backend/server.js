@@ -14,6 +14,7 @@ import hrRoutes from "./Routers/hrRoutes.js";
 import planRoutes from "./Routers/planRoutes.js";
 import paymentRoutes from "./Routers/paymentRoutes.js"; // ✅ ADDED
 import "./cron/subscriptionExpiry.js";
+import contactRoutes from "./Routers/contactRoutes.js";
 
 const app = express();
 
@@ -39,7 +40,7 @@ app.use("/api/setter-requests", setterRequestRoutes);
 app.use("/api/hr", hrRoutes); // ← ye line honi chahiye
 app.use("/api/plans", planRoutes);
 app.use("/api/payment", paymentRoutes);
-
+app.use("/api/contact", contactRoutes);
 // Health
 app.get("/api/health", (req, res) =>
   res.json({ status: "ok", time: new Date() }),

@@ -39,7 +39,8 @@ import CreatePlan from "./Components/Admin/CreatePlan";
 import PaymentHistory from "./Components/Admin/PaymentHistory";
 import ManageSetter from "./Components/Admin/ManageSetter";
 import CreateMachineTest from "./Components/Admin/Createmachinetest";
-
+import Contact from "./Pages/Contact/Contact";
+import AboutUs from "./Pages/About/AboutUs";
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 
@@ -75,6 +76,8 @@ const App = () => {
               <Route path="/store" element={<Store />} />
               <Route path="/upgrade" element={<Upgrade />} />
             </Route>
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<AboutUs />} />
 
             {/* ── Public Routes ── */}
             <Route path="/" element={<Home />} />
@@ -84,7 +87,6 @@ const App = () => {
             <Route path="/reset/:token" element={<Reset />} />
             <Route path="/profile/:username" element={<Profile />} />
             <Route path="/problems/:slug" element={<ProblemDetail />} />
-
 
             {/* Interview sub-routes */}
             <Route
@@ -137,7 +139,7 @@ const App = () => {
                 path="users"
                 element={
                   <AdminOnlyRoute>
-                   <ManageSetter/>
+                    <ManageSetter />
                   </AdminOnlyRoute>
                 }
               />
@@ -158,10 +160,7 @@ const App = () => {
                 }
               />
 
-              <Route
-                path="machine"
-                element={<CreateMachineTest/>}
-              />
+              <Route path="machine" element={<CreateMachineTest />} />
               <Route
                 path="hr-interview"
                 element={
@@ -180,14 +179,14 @@ const App = () => {
               <Route path="payment-history" element={<PaymentHistory />} />
             </Route>
 
-
             {/* Old URL redirect → new */}
-            <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+            <Route
+              path="/admin/dashboard"
+              element={<Navigate to="/admin" replace />}
+            />
 
             <Route path="/interview/start" element={<StartInterview />} />
             <Route path="/interview/schedule" element={<ScheduleInterview />} />
-
-
           </Routes>
         </BrowserRouter>
       </AdminProvider>
